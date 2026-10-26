@@ -6,37 +6,29 @@ lab:
 
 # Lab – Prevent data exposure in Copilot and AI apps with Data Loss Prevention
 
-Alex Wilber, the Information Security Administrator at Contoso Ltd., is building on the classification work from the information protection lab. Employees use Microsoft 365 Copilot to work with business content, but sensitive financial information needs additional safeguards. In this lab, you'll help Alex configure a data loss prevention (DLP) policy that restricts Copilot from processing content with the Financial data label for a selected group. You'll also create an endpoint DLP policy to block banking details from being pasted or uploaded to AI websites and configure alerts to support incident review.
+Alex now needs controls for how sensitive content is used with AI. You'll enable a label-based Copilot restriction and prepare an endpoint DLP policy for banking information sent to AI websites. Keep the endpoint policy in simulation until you add an insider risk condition in the next section.
 
 **Tasks**:
 
-1. Create a DLP policy in simulation mode
-1. Activate a policy in simulation mode
+1. Create a DLP policy for Copilot
 1. Create an endpoint DLP policy
 1. Configure DLP alert settings
 1. Configure DLP alert aggregation
 
-## Task 1 – Create a DLP policy in simulation mode
+## Task 1 – Create a DLP policy for Copilot
 
-In this task, you'll create a DLP policy that targets the Internal/Financial data label created in the information protection lab. You'll scope it to the Mark 8 Project Team and start in simulation mode to review potential matches without enforcing the restriction.
+Create and enable a policy that restricts Copilot from processing content labeled Confidential/All Employees. Keep the default scope of all users and groups.
 
-Before you begin, complete the label creation, publishing, and manual labeling tasks in the [information protection lab](./1-information-protection.md). That lab creates a sample financial document with the Financial data label without waiting for auto-labeling. Simulation results can still take time to appear; creating the document doesn't guarantee an immediate match or make it available to members of the policy's selected group.
+> [!NOTE]
+> Select Confidential/All Employees, the label on your sample document. The policy will target all content with this label, not just that document.
 
-1. With the lab environment ready, open **Microsoft Edge**.
+You'll enable the policy directly for this lab exercise. In production, start in simulation mode and review policy matches before enabling enforcement.
 
-1. In **Microsoft Edge**, navigate to `https://purview.microsoft.com` and sign in with the lab account provided for **Alex Wilber**. Use the credentials provided by your lab host.
+1. Return to the **Microsoft Purview portal** browser tab. From the left sidebar, select **Solutions** > **Data Loss Prevention** > **Policies**.
 
-1. When prompted to stay signed in, you can select either **Yes**.
+1. On the **Policies** page, select **+ Create policy** .
 
-1. Select **Get started** on the welcome message for the new Microsoft Purview portal.
-
-    ![Screenshot showing the Welcome to the new Microsoft Purview portal screen.](./media/welcome-purview-portal.png)
-
-1. From the left sidebar, select **Solutions** > **Data Loss Prevention** > **Policies**.
-
-1. On the **Policies** page, select **+ Create policy** to start the configuration for creating a new data loss prevention policy.
-
-1. On the **Choose what type of data to protect** page, select **Data stored in connected sources**, then select **Next**.
+1. On the **What info do you want to protect** page, select **Enterprise applications & devices**.
 
 1. On the **Start with a template or create a custom policy** page, select **Custom** as the category, then select **Custom policy** under **Regulations**.
 
@@ -44,34 +36,22 @@ Before you begin, complete the label creation, publishing, and manual labeling t
 
 1. On the **Name your DLP policy** page, enter:
 
-   - **Name**: `Copilot restrict financial data`
-   - **Description**: `Restricts Copilot from processing content labeled Internal/Financial data for the Mark 8 Project Team.`
+   - **Name**: `Copilot restrict confidential content`
+   - **Description**: `Restricts Copilot from processing content labeled Confidential/All Employees.`
 
 1. Select **Next**.
 
 1. On the **Assign admin units** page select **Next**.
 
-1. On the **Choose locations to apply the policy** page, select the location for **Microsoft 365 Copilot** only. If any other locations are selected, deselect them.
+1. On the **Choose locations to apply the policy** page, select the location for **Microsoft Copilot and Copilot Chat** only. If any other locations are selected, deselect them.
 
-1. On the **Choose locations to apply the policy**, in the **Actions** column for Microsoft 365 Copilot, select **Edit** to change the scope.
-
-    ![Screenshot of the Microsoft 365 Copilot location selected in a DLP policy. The scope shows “All users & groups” with an Edit option highlighted.](./media/dlp-scope-users.png)
-
-1. On the **Scope for Copilot for Microsoft 365 (preview)** flyout:
-
-   - Select **Specific users and groups**
-   - Under **Specific users and groups**, select **Include** > **Include groups**
-   - On the **Choose groups** flyout, select the checkbox for **Mark 8 Project Team**
-   - Select **Done** at the bottom of the **Choose groups** flyout
-   - Select **Done** at the bottom of the **Scope for Copilot for Microsoft 365 (preview)** flyout
-
-1. Back on the **Choose where to apply the policy** page, select **Next**.
+1. Keep the default **All users & groups** scope for Microsoft 365 Copilot, then select **Next**.
 
 1. On the **Define policy settings** page, leave the default **Create or customize advanced DLP rules** selected, then select **Next**.
 
 1. On the **Customize advanced DLP rules** page, select **+ Create rule**.
 
-1. In the **Create rule** flyout, in the **Name** field, enter `Restrict Copilot financial data`.
+1. In the **Create rule** flyout, in the **Name** field, enter `Restrict Copilot confidential content`.
 
 1. Under **Conditions**, select **+ Add condition** > **Content contains**.
 
@@ -79,7 +59,7 @@ Before you begin, complete the label creation, publishing, and manual labeling t
 
    ![Screenshot of the Conditions pane in Microsoft Purview with Content contains selected and the Add menu showing Sensitivity labels.](./media/dlp-condition-sensitivity-label.png)
 
-1. In the **Sensitivity labels** flyout, select the checkbox for **Financial data** in the **Internal** label group, then select **Add** at the bottom of the flyout.
+1. In the **Sensitivity labels** flyout, select the checkbox for **All Employees** with the label path **Confidential/All Employees**, then select **Add** at the bottom of the flyout.
 
 1. Back on the **Create rule** flyout, under **Actions** select **+ Add an action** > **Restrict Copilot from processing content**.
 
@@ -87,44 +67,29 @@ Before you begin, complete the label creation, publishing, and manual labeling t
 
 1. Back on the **Customize advanced DLP rules** page, select **Next**
 
-1. On the **Policy mode** page select **Run the policy in simulation mode**, then select both checkboxes:
+1. On the **Policy mode** page select **Turn the policy on immediately**, then select **Next**.
 
-   - Show policy tips while in simulation mode
-   - Turn the policy on if it's not edited within fifteen days of simulation
+1. On the **Review and finish** page, verify the following settings, then select **Submit**:
 
-1. Select **Next**.
-
-1. On the **Review and finish** page review your settings then select **Submit**.
-
-    >[!Note] **Note:** If you see a **Permission required** label, it indicates that administrative consent is needed to enable the policy across some locations. This will not affect completion of this exercise.
+   - **Location**: Microsoft Copilot and Copilot Chat only
+   - **Scope**: All users & groups
+   - **Sensitivity label**: Confidential/All Employees
+   - **Action**: Restrict Copilot from processing content
+   - **Policy mode**: Turn the policy on immediately
 
 1. On the **New policy created** page select **Done**.
 
-You've created a DLP policy in simulation mode that evaluates content with the Financial data label for the Mark 8 Project Team. Simulation doesn't enforce the restriction. The policy is configured to turn on automatically after fifteen days if it isn't edited; in the next task, you'll activate it manually.
+Your Copilot policy is enabled for content labeled Confidential/All Employees. Next, configure a different control for banking information sent to AI websites.
 
-## Task 2 – Activate a policy in simulation mode
+> [!NOTE]
+> Copilot policy changes can take up to four hours to take effect. Verify the policy configuration to complete this task; a live blocking demonstration isn't required.
 
-In this task, you'll activate the DLP for Copilot policy and explore the insights available in simulation mode.
+## Task 2 – Create an endpoint DLP policy
 
-1. On the **Policies** page select the **Copilot restrict financial data** policy.
+The Copilot policy checks a document's label. Next, prepare an endpoint policy that detects banking information directly. Configure blocking actions for AI websites, but leave the policy in simulation until you add the Elevated risk condition in the IRM section.
 
-1. At the bottom of the flyout on the right, select **View simulation**.
-
-1. On the simulation page, take a moment to explore:
-
-   - The **Simulation overview** tab, which shows scanning progress, total matches, and scanning status by location.
-   - The **Items for review tab**, where any predicted matches will appear once available.
-   - The **Alerts tab**, where any alerts triggered in simulation mode would be listed.
-
-1. After exploring the insights in simulation mode, select **Turn the policy on** then **Confirm** to activate the DLP policy.
-
-   A confirmation flyout will appear indicating that the policy has been published successfully.
-
-You've activated the DLP for Copilot policy, moving it from simulation mode to active enforcement for the Mark 8 Project Team. The restriction targets content with the Financial data label; it doesn't automatically classify unlabeled financial information.
-
-## Task 3 – Create an endpoint DLP policy
-
-The Copilot policy uses a sensitivity label to identify content. In this task, you'll use built-in sensitive information types to detect banking data, such as credit card numbers and routing information, regardless of its label. You'll configure an endpoint DLP policy to block pasting or uploading matching data to the Generative AI Websites service domain group on supported, onboarded devices and browsers.
+> [!NOTE]
+> Endpoint enforcement requires supported, onboarded devices and browsers. Creating this policy doesn't onboard devices.
 
 1. On the **Policies** page of the **Data Loss Prevention** solution of the Microsoft Purview portal, select **+ Create policy**.
 
@@ -135,7 +100,7 @@ The Copilot policy uses a sensitivity label to identify content. In this task, y
 1. On the **Name your DLP policy** page, enter:
 
     - **Name**: `Block AI website uploads of banking data`
-    - **Description**: `Prevent users from pasting or uploading banking information, such as credit card or routing numbers, to AI websites.`
+    - **Description**: `Prepared in simulation for risk-based blocking of banking data uploads and pasting to AI websites. Add the Elevated risk condition before enabling enforcement.`
 
 1. Select **Next**.
 
@@ -202,7 +167,7 @@ The Copilot policy uses a sensitivity label to identify content. In this task, y
 
 1. Back on the **Customize advanced DLP rules**, select **Next**.
 
-1. On the **Policy mode** page select **Turn the policy on immediately**.
+1. On the **Policy mode** page, select **Run the policy in simulation mode**. Leave automatic activation after fifteen days unchecked.
 
 1. Select **Next**.
 
@@ -210,11 +175,11 @@ The Copilot policy uses a sensitivity label to identify content. In this task, y
 
 1. Once the policy is created select **Done** on the **New policy created** page.
 
-You've created an endpoint DLP policy that blocks matching banking data from being pasted or uploaded to domains in the Generative AI Websites group on supported, onboarded devices and browsers.
+Your endpoint policy is saved in simulation and won't block activity yet. Next, configure alerts; keep it in simulation until the risk condition is added.
 
-## Task 4 – Configure DLP alert settings
+## Task 3 – Configure DLP alert settings
 
-Now that the DLP rule is in place, you'll configure alert settings so DLP incidents are routed to the right administrator for timely review.
+Configure medium-severity email alerts for the endpoint rule so the MOD Administrator can review matching activity.
 
 1. On the **Policies** page of the **Data Loss Prevention**, select the **Block AI website uploads of banking data** policy, then select **Edit policy** (pencil) icon (![Icon of a pencil.](./media/edit-pencil-icon.png)).
 
@@ -242,17 +207,17 @@ Now that the DLP rule is in place, you'll configure alert settings so DLP incide
 
 1. Back on the **Customize advanced DLP rules** page, select **Next**.
 
-1. On the **Policy mode** page, leave the selection **Turn the policy on immediately**, then select **Next**.
+1. On the **Policy mode** page, keep **Run the policy in simulation mode** selected and automatic activation unchecked, then select **Next**.
 
 1. On the **Review and finish** page, review your policy settings then select **Submit** to create the policy.
 
 1. Select **Done** on the **Policy updated** page.
 
-You configured incident alert settings so that medium-severity DLP alerts are sent to the MOD Administrator account whenever a rule match occurs.
+You've configured medium-severity alerts for the MOD Administrator. Next, group repeated detections to make alerts easier to review.
 
-## Task 5 – Configure DLP alert aggregation
+## Task 4 – Configure DLP alert aggregation
 
-Frequent Copilot or AI website activity can trigger many DLP rule matches in a short time. You'll configure alert aggregation so repeated events from the same user are grouped into a single alert.
+Group repeated DLP detections from the same user into a 30-minute window to reduce alert volume.
 
 1. In the Microsoft Purview portal, go to **Settings** > **Data Loss Prevention**.
 
@@ -264,10 +229,10 @@ Frequent Copilot or AI website activity can trigger many DLP rule matches in a s
 
 1. Select **Save**.
 
-You've configured alert aggregation so multiple DLP detections from the same user within a 30-minute window are combined into one alert.
+You've configured a 30-minute aggregation window to help administrators review repeated activity together.
 
-## Lab complete
+## Section complete
 
-You helped Alex add safeguards for sensitive financial information in AI workflows. You activated a policy that restricts Copilot from processing content labeled Financial data for the Mark 8 Project Team and created an endpoint policy that uses built-in sensitive information types to block banking data from being pasted or uploaded to domains in the Generative AI Websites group. You also configured incident alerts and alert aggregation to support review. These controls build on classification: the Copilot policy relies on the label, while the endpoint policy detects sensitive content directly.
+You've enabled the Copilot restriction and prepared the banking-data endpoint policy and alerts. The endpoint policy is still in simulation. Next, add an Elevated risk condition so its blocking actions apply only when both content and user risk match.
 
-If you'd like to extend this scenario, continue to the bonus task to use Adaptive Protection so these safeguards apply dynamically based on insider risk signals.
+Continue to [Insider Risk Management](./3-insider-risk-management.md) to configure AI risk detection and Adaptive Protection.

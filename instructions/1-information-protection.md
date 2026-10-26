@@ -1,19 +1,20 @@
 # Lab – Manage sensitive data using Microsoft Purview Information Protection in the age of AI
 
-Alex Wilber, the Information Security Administrator at Contoso Ltd., is preparing the company's information for use with Microsoft 365 Copilot. Employees use Copilot to find information and summarize business documents, so Alex needs a consistent way to distinguish sensitive financial data from general internal content. In this lab, you'll help Alex create and publish sensitivity labels, configure an auto-labeling policy that detects credit card numbers using a built-in sensitive information type (SIT), and manually label a sample financial document.
+Alex Wilber, Contoso's Information Security Administrator, needs employees to recognize sensitive financial information as they work with Microsoft 365 Copilot. You'll help Alex create and publish a sensitivity label, configure automatic detection of credit card numbers, and label a sample document. This classification work sets up the DLP controls you'll configure in the next section.
 
-The goal is to establish a classification foundation for responsible AI use. Microsoft 365 Copilot respects users' existing access permissions. The financial data label you create adds a visible footer; it doesn't encrypt content or prevent Copilot from using it. Classification can also support additional controls, such as the Copilot DLP policy in the [data loss prevention lab](./2-data-loss-prevention.md).
+> [!NOTE]
+> Copilot respects users' existing access permissions. The Financial data label you'll create adds classification and a footer, not encryption or a Copilot restriction.
 
 **Tasks**:
 
 1. Create a label group and a financial data label
 1. Publish sensitivity labels
 1. Configure auto-apply labeling
-1. Apply the Financial data label to a document
+1. Apply the Confidential/All Employees label to a document
 
 ## Task 1 – Create a label group and a financial data label
 
-Alex needs a consistent way to identify sensitive financial information as employees work with it, including through Microsoft 365 Copilot. In this task, you'll create an Internal label group and a Financial data label with a visible footer to help employees recognize content intended for internal use.
+Create an Internal label group and a Financial data label. The label's footer will help employees recognize sensitive financial content intended for internal use.
 
 1. In the **Microsoft Purview portal**, navigate to **Solutions** > **Information Protection**.
 
@@ -67,11 +68,11 @@ Alex needs a consistent way to identify sensitive financial information as emplo
 
 1. On the **Your sensitivity label was created** page, select **Don't create a policy yet**, then select **Done**.
 
-You created a Financial data label in the Internal label group. Its footer helps users recognize sensitive financial content when reading, sharing, or reusing it. The label provides classification, not an access restriction.
+Your Financial data label is ready. Next, publish it so employees can apply it to their content.
 
 ## Task 2 – Publish sensitivity labels
 
-With the label created, you'll publish it so users and policies can apply it across Microsoft 365 workloads. Publishing makes the label available for manual and automated use.
+Publish the Financial data label to make it available to users. You'll also select it in the auto-labeling policy in the next task.
 
 1. In the Microsoft Purview portal, under **Information Protection**, expand **Policies** then select **Label publishing policies**.
 
@@ -95,13 +96,14 @@ With the label created, you'll publish it so users and policies can apply it acr
 
 1. On the **New policy created** page, select **Done**.
 
-You published the Internal/Financial data label so it can be applied manually or automatically. This makes the label available for use in your upcoming auto-labeling policy.
+You've published Internal/Financial data. Next, configure a policy to apply it when credit card numbers are detected.
 
 ## Task 3 – Configure auto-apply labeling
 
-You'll now configure an auto-labeling policy to apply the Financial data label when the built-in Credit card number SIT detects a match. This helps Alex classify sensitive payment information consistently, including content employees might reference in Copilot. You'll start the policy in simulation mode so its matches can be reviewed before labels are applied.
+Configure an auto-labeling policy using the built-in Credit card number sensitive information type (SIT). Start in simulation mode to evaluate matches before applying the Financial data label.
 
-This rule detects credit card numbers, not all financial information. Users can apply the Financial data label manually to other sensitive financial content. No custom SIT is required.
+> [!NOTE]
+> This rule detects credit card numbers, not all financial information. Simulation evaluates matches without applying labels. The policy is set to activate after seven days if it isn't modified.
 
 1. In the Microsoft Purview portal, under **Information Protection**, expand **Policies** then select **Auto-labeling policies**.
 
@@ -165,14 +167,17 @@ This rule detects credit card numbers, not all financial information. Users can 
 
 1. On the confirmation page, select **Done**.
 
-You configured an auto-labeling policy in simulation mode, with automatic activation after seven days if the policy isn't modified. Simulation doesn't apply labels. Once active, the policy can label matching content to support consistent classification and label-based controls; it doesn't by itself restrict sharing or Copilot access.
+Your auto-labeling policy is configured in simulation mode. Next, apply a label manually to content that doesn't contain credit card numbers.
 
-## Task 4 – Apply the Financial data label to a document
+## Task 4 – Apply the Confidential/All Employees label to a document
 
-Alex also needs employees to recognize financial information that isn't detected by the credit card number rule. In this task, you'll create a fictional budget summary in Word for the web, apply the Financial data label manually, and verify its footer. This lets you see the label in use without waiting for the auto-labeling simulation to finish.
+Create a fictional budget summary in Word for the web and apply Confidential/All Employees. This gives you a labeled document for the next section's Copilot DLP policy.
 
 > [!NOTE]
-> Use your lab account, which must be included in the label publishing policy from Task 2. Newly published labels can take time to appear. If Financial data isn't available, confirm that you're signed in with the correct account and included in the policy, then allow time for the policy to reach Word for the web before refreshing the page. If the Sensitivity option is unavailable, also confirm that sensitivity labels are enabled for files in SharePoint and OneDrive. Don't select a different label to complete this task.
+> New labels can take time to synchronize across Word and DLP. Use the preconfigured Confidential/All Employees label for this document and the following DLP exercise, even if Financial data is available.
+
+> [!NOTE]
+> If Sensitivity is unavailable, check your lab account and SharePoint/OneDrive labeling support. If Confidential/All Employees is missing, contact your instructor rather than selecting another label.
 
 1. In the **Microsoft Purview portal**, select the **Microsoft 365 app launcher** (the nine-dot icon in the upper-left corner).
 
@@ -197,20 +202,19 @@ Alex also needs employees to recognize financial information that isn't detected
 
    Don't enter real payment details or other sensitive information. This document doesn't need credit card numbers because you'll apply the label manually.
 
-1. On the **Home** tab, select **Sensitivity** > **Internal** > **Financial data**.
+1. On the **Home** tab, select **Sensitivity** > **Confidential** > **All Employees**.
 
-1. Confirm that Word for the web displays **Financial data** as the document's sensitivity label.
-
-1. Scroll to the bottom of the page and confirm that the footer contains:
-
-   `Contoso Financial Data - Internal Use Only`
+1. Confirm that Word for the web displays **Confidential/All Employees** as the document's sensitivity label. If only **All Employees** is displayed, open the **Sensitivity** menu and confirm that the selected label is under **Confidential**, not **General** or **Highly Confidential**.
 
 1. Wait until Word indicates that your changes are saved.
 
-You manually classified a financial document and verified its label and visible footer. The budget figures don't match the credit card number rule, which demonstrates why manual classification still matters. The label doesn't restrict access or block Copilot by itself; the next lab adds a label-based DLP control.
+> [!TIP]
+> Optional: If Internal/Financial data is available, try it on a separate document and check for the footer `Contoso Financial Data - Internal Use Only`. Keep Confidential/All Employees on your main sample document for the DLP exercise.
 
-## Lab complete
+Your budget summary is labeled. Because its figures don't match the credit card number rule, this demonstrates where manual classification complements automatic detection.
 
-You helped Alex Wilber establish a classification foundation for Contoso's use of Microsoft 365 Copilot. You created and published a financial data label, configured an auto-labeling policy in simulation mode to detect credit card numbers, and manually labeled a sample financial document. These changes help distinguish sensitive financial information from general internal content without changing who can access it.
+## Section complete
 
-Continue to the [data loss prevention lab](./2-data-loss-prevention.md) to add a DLP safeguard that controls how Copilot handles labeled financial data.
+You've created and published Financial data, configured auto-labeling in simulation, and manually applied Confidential/All Employees to a sample document. Alex now has a classification foundation for the next layer of controls.
+
+Continue to [data loss prevention](./2-data-loss-prevention.md) to configure Copilot restrictions and controls for external AI websites.
