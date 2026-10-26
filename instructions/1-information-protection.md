@@ -1,141 +1,23 @@
 # Lab – Manage sensitive data using Microsoft Purview Information Protection in the age of AI
 
-Megan Bowen, the Information Security Administrator at Contoso Ltd., is updating the company's information protection strategy to reduce the risk of sensitive data appearing in Microsoft 365 Copilot. After incidents where personal data surfaced in support tickets, she plans to create and test custom sensitive information types (SITs) to detect Contoso project codes and other confidential data. To maintain consistent protection, Megan will apply a default sensitivity label across workloads so that all content is classified and protected before it can appear in Copilot results or be shared inappropriately.
+Alex Wilber, the Information Security Administrator at Contoso Ltd., is preparing the company's information for use with Microsoft 365 Copilot. Employees use Copilot to find information and summarize business documents, so Alex needs a consistent way to distinguish sensitive financial data from general internal content. In this lab, you'll help Alex create and publish sensitivity labels, configure an auto-labeling policy that detects credit card numbers using a built-in sensitive information type (SIT), and manually label a sample financial document.
+
+The goal is to establish a classification foundation for responsible AI use. Microsoft 365 Copilot respects users' existing access permissions. The financial data label you create adds a visible footer; it doesn't encrypt content or prevent Copilot from using it. Classification can also support additional controls, such as the Copilot DLP policy in the [data loss prevention lab](./2-data-loss-prevention.md).
 
 **Tasks**:
 
-1. Enable Audit in the Microsoft Purview portal
-1. Create a custom sensitive information type
-1. Test custom sensitive information types
-1. Create a sensitivity label group
-1. Create a label in the group for project data
+1. Create a label group and a financial data label
 1. Publish sensitivity labels
 1. Configure auto-apply labeling
-1. Configure default sensitivity labels
+1. Apply the Financial data label to a document
 
-## Task 1 – Enable Audit in the Microsoft Purview portal
+## Task 1 – Create a label group and a financial data label
 
-Audit records user and administrator activity, and you'll need it enabled to continue with creating auto-apply sensitivity labels in this session.
-
-1. With the lab environment ready, open **Microsoft Edge**.
-
-1. In **Microsoft Edge**, navigate to `https://purview.microsoft.com` and sign in as **Megan Bowen** (`MeganB@WWLxZZZZZZ.onmicrosoft.com`, where ZZZZZZ is your unique tenant ID). Use the password provided by your lab host.
-
-1. Select **Get started** on the welcome message for the new Microsoft Purview portal.
-
-    ![Screenshot showing the Welcome to the new Microsoft Purview portal screen.](./media/welcome-purview-portal.png)
-
-1. From the left sidebar, select **Solutions**, then select **Audit**.
-
-1. On the **Search** page, select **Start recording user and admin activity** to enable audit logging.
-
-    ![Screenshot showing the Start recording user and admin activity button.](./media/enable-audit-button.png)
-
-1. Verify that the blue bar disappears from the page after you enable auditing.
-
-You've successfully enabled Audit in Microsoft Purview. With auditing active, you're ready to move on to creating custom sensitive information types and sensitivity labels.
-
-## Task 2 – Create a custom sensitive information type
-
-In this task, you'll create a custom sensitive information type (SIT) to detect Contoso project codes. The built-in SITs don't match this format, so you need a custom one to ensure project codes can be consistently identified and protected.
-
-1. From the left sidebar, select **Solutions**, then select **Information Protection**.
-
-1. Expand **Classifiers**, then select **Sensitive info types**.
-
-1. On the **Sensitive info types** page, select **+ Create sensitive info type**.
-
-1. On the **Name your sensitive info type** page, enter:
-
-   - **Name**: `Contoso Project Codes`
-   - **Description**: `Pattern for Contoso project code identifiers.`
-
-1. Select **Next**.
-
-1. On the **Define patterns for this sensitive info type** page, select **Create one now**.
-
-1. On the **New pattern** flyout, under **Primary element**, select **+ Add primary element** > **Regular expression**.
-
-1. On the **+ Add a regular expression** flyout, enter:
-
-   - **ID**: `Contoso project code regex`
-   - **Regular expression**: `[A-Z]{2}-[0-9]{4}-[0-9]{3}`
-   - Select the radio button for **String match**.
-   - Select **Done**.
-
-1. Back on the **New pattern** flyout, set **Detect primary AND supporting elements** to **100** characters.
-
-1. Under **Supporting elements**, select **+ Add supporting elements or group of elements**, then select **Keyword list**.
-
-1. On the **Add a keyword list** flyout, enter:
-
-   - **ID**: `Project code keywords`
-   - In **Keyword Group #1** under **Case insensitive**:
-
-    ```text
-    Project
-    Code
-    Identifier
-    ```
-
-   - Select the radio button for **Word match**.
-   - Select **Done**.
-
-1. Select **Create** at the bottom of the flyout.
-
-1. Back on the **Define patterns for this sensitive info type** page, select **Next**.
-
-1. On the **Choose the recommended confidence level to show in compliance policies** page, keep the default value, then select **Next**.
-
-1. On the **Review settings and finish** page, review your configuration, then select **Create**. After the SIT is created, select **Done**.
-
-You've successfully created a new sensitive information type to identify Contoso project codes. Custom SITs allow you to detect and classify organization-specific data so it can be protected through Microsoft Purview policies.
-
-## Task 3 – Test custom sensitive information types
-
-In this task, you'll confirm that the custom sensitive information type (SIT) for project codes detects data correctly before it's used in policies. Testing ensures the regex and keywords work as expected.
-
-1. On the taskbar in Windows, search for **Notepad** and open the app.
-
-1. In Notepad, enter:
-
-    ```text
-    The Contoso project code PR-2025-001 has been assigned to this work.
-    ```
-
-1. Select **File** > **Save As**.
-
-1. In the **Documents** folder, enter `ProjectCodeTest.txt` as the **File name**, then select **Save**.
-
-1. Close Notepad.
-
-1. In **Microsoft Edge**, return to the **Microsoft Purview portal** tab. You should still be on the Sensitive info types page in the Purview portal.
-
-1. Search for `Contoso Project Codes`, then select the SIT.
-
-1. Select **Test**.
-
-1. On the **Upload file to test "Contoso Project Codes"** flyout, select **Upload file**.
-
-1. Browse to the **Documents** folder, select `ProjectCodeTest.txt`, then select **Open**.
-
-1. Select **Test** to start the analysis.
-
-1. On the **Match results** page, review the results, then select **Finish**.
-
-You've successfully tested the custom sensitive information type for project codes. Testing confirms the SIT works as intended, so you can now use it to help protect sensitive content across Microsoft Purview.
-
-## Task 4 – Create a sensitivity label group
-
-In this task, you'll enable support for sensitivity labels in SharePoint and OneDrive, then create a label group to organize related labels. This provides a structure for internal and project-specific labels that will help control data exposure to Copilot.
+Alex needs a consistent way to identify sensitive financial information as employees work with it, including through Microsoft 365 Copilot. In this task, you'll create an Internal label group and a Financial data label with a visible footer to help employees recognize content intended for internal use.
 
 1. In the **Microsoft Purview portal**, navigate to **Solutions** > **Information Protection**.
 
 1. On the **Information Protection** page, select **Sensitivity labels** from the left navigation.
-
-1. At the top of the page, select **Turn on now** in the banner to enable support for sensitivity labels in SharePoint and OneDrive.
-
-   ![Screenshot showing the banner with the Turn on now button for enabling sensitivity labels in SharePoint and OneDrive.](./media/turn-on-sensitivity-labels.png)
 
 1. On the **Sensitivity labels** page, select **+ Create** > **Label group**.
 
@@ -144,34 +26,24 @@ In this task, you'll enable support for sensitivity labels in SharePoint and One
    - **Name**: `Internal`
    - **Display name**: `Internal`
    - **Description for users**: `Use this label for internal Contoso content.`
-   - **Description for admins**: `Label group for internal content. Used to organize sublabels, including Copilot project data.`
+   - **Description for admins**: `Label group for internal Contoso content, including financial data.`
 
 1. Select **Next**.
 
 1. On the **Review your settings and finish** page, select **Create label group**.
 
-1. On the **Your label group was created successfully** page, select **Don't create a label yet**, then select **Done**.
+1. On the **Your label group was created successfully** page, select **Create a label in this group**, then select **Done**.
 
-You created a label group named **Internal** to organize labels for internal content. This structure helps you manage related labels for different protection needs.
+1. On the **Provide basic details for this label** page enter:
 
-## Task 5 – Create a label in the group for project data
-
-Now that the label group is in place, you'll create a label for project data. This label will be used later in an auto-labeling policy to automatically classify content containing Contoso project codes.
-
-1. On the **Sensitivity labels** page, find the **Internal** sensitivity label group. Select the vertical ellipsis (**...**) next to it, then select **+ Create label in group** from the dropdown menu.
-
-    ![Screenshot showing the Action menu to create a label in group for a sensitivity label.](./media/create-label-in-group.png)
-
-1. The **New sensitivity label** wizard will open. On the **Provide basic details for this label** page enter:
-
-   - **Name**: `Project data`
-   - **Display name**: `Project data`
-   - **Description for users**: `Label for documents and emails that contain Contoso project codes.`
-   - **Description for admins**: `This label is used with auto-apply policies to protect project data and reduce Copilot exposure.`
+   - **Name**: `Financial data`
+   - **Display name**: `Financial data`
+   - **Description for users**: `Use this label for documents and emails that contain sensitive financial information, such as credit card numbers.`
+   - **Description for admins**: `Classifies sensitive financial content with a visible footer and supports auto-labeling and label-based DLP policies.`
 
 1. Select **Next**.
 
-1. On the **Define the scope for this label** page, select **Files** and **Emails**. Make sure **Meetings** is deselected.
+1. On the **Define the scope for this label** page, select **Files & other data assets** and **Emails**. Make sure **Meetings** is deselected.
 
 1. On the **Choose protection settings for labeled items** page, select **Apply content marking**, then select **Next**.
 
@@ -181,7 +53,7 @@ Now that the label group is in place, you'll create a label for project data. Th
 
 1. In the **Customize footer text** flyout, enter:
 
-   - **Footer text**: `Contoso Project Data - Confidential`
+   - **Footer text**: `Contoso Financial Data - Internal Use Only`
    - **Font size**: `10`
    - **Font color**: Black
    - **Align text**: Left
@@ -195,9 +67,9 @@ Now that the label group is in place, you'll create a label for project data. Th
 
 1. On the **Your sensitivity label was created** page, select **Don't create a policy yet**, then select **Done**.
 
-You created a Project data label in the Internal label group. It applies a clear footer to help users identify protected content and supports automatic labeling in future steps.
+You created a Financial data label in the Internal label group. Its footer helps users recognize sensitive financial content when reading, sharing, or reusing it. The label provides classification, not an access restriction.
 
-## Task 6 – Publish sensitivity labels
+## Task 2 – Publish sensitivity labels
 
 With the label created, you'll publish it so users and policies can apply it across Microsoft 365 workloads. Publishing makes the label available for manual and automated use.
 
@@ -209,29 +81,33 @@ With the label created, you'll publish it so users and policies can apply it acr
 
 1. On the **Sensitivity labels to publish** flyout, select the checkbox for:
 
-   - **Internal/Project data**
+   - **Internal/Financial data**
    - Select **Add**
 
 1. Back on the **Choose sensitivity labels to publish** page, select **Next** through the remaining pages until you reach the **Name your policy** page.
 
 1. On the **Name your policy** page, enter:
 
-   - **Name**: `Internal project data`
-   - **Description**: `Makes Internal and Project data sensitivity labels available to users.`
+   - **Name**: `Internal financial data`
+   - **Description**: `Makes the Financial data label in the Internal label group available for users to apply to documents and emails.`
 
 1. Select **Next**, then on the **Review and finish** page, select **Submit**.
 
 1. On the **New policy created** page, select **Done**.
 
-You published the Internal/Project data label so it can be applied manually or automatically. This makes the label available for use in your upcoming auto-labeling policy.
+You published the Internal/Financial data label so it can be applied manually or automatically. This makes the label available for use in your upcoming auto-labeling policy.
 
-## Task 7 – Configure auto-apply labeling
+## Task 3 – Configure auto-apply labeling
 
-You'll now create an auto-apply policy that automatically assigns the Project data label when Contoso project codes are detected. Automating labeling ensures consistent protection without depending on users to classify data manually.
+You'll now configure an auto-labeling policy to apply the Financial data label when the built-in Credit card number SIT detects a match. This helps Alex classify sensitive payment information consistently, including content employees might reference in Copilot. You'll start the policy in simulation mode so its matches can be reviewed before labels are applied.
+
+This rule detects credit card numbers, not all financial information. Users can apply the Financial data label manually to other sensitive financial content. No custom SIT is required.
 
 1. In the Microsoft Purview portal, under **Information Protection**, expand **Policies** then select **Auto-labeling policies**.
 
 1. On the **Auto-labeling policies** page, select **+ Create auto-labeling policy**.
+
+1. On the **What type of auto-labeling policy do you want to create?** page, select **Automatically apply labels only**.
 
 1. On the **Choose info you want this label applied to** page, create a policy in a **Custom** category for a **Custom policy** regulation.
 
@@ -239,14 +115,14 @@ You'll now create an auto-apply policy that automatically assigns the Project da
 
 1. On the **Name your auto-labeling policy** page, enter:
 
-   - **Name**: `Auto-apply project data`
-   - **Description**: `Automatically applies the Project data sensitivity label when Contoso project codes are detected.`  
+   - **Name**: `Auto-apply financial data`
+   - **Description**: `Automatically applies the Financial data sensitivity label when credit card numbers are detected.`
 
 1. Select **Next**.
 
 1. On the **Choose a label to auto-apply** page, select **+ Choose a label**.
 
-1. On the **Choose a sensitivity label** flyout, select the checkbox for **Internal/Project data**, then select **Add**.
+1. On the **Choose a sensitivity label** flyout, select the checkbox for **Internal/Financial data**, then select **Add**.
 
 1. Back on the **Choose a label to auto-apply** page, select **Next**.
 
@@ -266,16 +142,14 @@ You'll now create an auto-apply policy that automatically assigns the Project da
 
 1. In the **New rule** flyout, enter:
 
-   - **Name**: `Project data rule`
-   - **Description**: `Detects Contoso project codes using the custom SIT.`
+   - **Name**: `Credit card number rule`
+   - **Description**: `Detects credit card numbers using the built-in Credit card number sensitive information type.`
 
 1. Under **Conditions**, select **+ Add condition** > **Content contains**.
 
 1. Under the **Content contains** section, select **+ Add** > **Sensitive info types**.
 
-1. In the **Sensitive info types** list, search for and select `Contoso Project Codes`, then select **Add**.
-
-1. Leave **Exceptions** blank.
+1. In the **Sensitive info types** list, search for and select `Credit card number`, then select **Add**.
 
 1. Select **Save** to finish creating the rule.
 
@@ -291,66 +165,52 @@ You'll now create an auto-apply policy that automatically assigns the Project da
 
 1. On the confirmation page, select **Done**.
 
-You configured an auto-apply policy that labels content containing Contoso project codes with the Project data label. This ensures project information is consistently classified and protected before it appears in Copilot or is shared externally.
+You configured an auto-labeling policy in simulation mode, with automatic activation after seven days if the policy isn't modified. Simulation doesn't apply labels. Once active, the policy can label matching content to support consistent classification and label-based controls; it doesn't by itself restrict sharing or Copilot access.
 
-## Task 8 – Configure default sensitivity labels
+## Task 4 – Apply the Financial data label to a document
 
-To make sure every new document and email starts with a baseline level of protection, you'll create a default labeling policy. Default labels apply automatically to new content and help prevent unlabeled data from appearing in Copilot results.
+Alex also needs employees to recognize financial information that isn't detected by the credit card number rule. In this task, you'll create a fictional budget summary in Word for the web, apply the Financial data label manually, and verify its footer. This lets you see the label in use without waiting for the auto-labeling simulation to finish.
 
-1. In the Microsoft Purview portal, under **Information Protection**, expand **Policies** then select **Label publishing policies**.
+> [!NOTE]
+> Use your lab account, which must be included in the label publishing policy from Task 2. Newly published labels can take time to appear. If Financial data isn't available, confirm that you're signed in with the correct account and included in the policy, then allow time for the policy to reach Word for the web before refreshing the page. If the Sensitivity option is unavailable, also confirm that sensitivity labels are enabled for files in SharePoint and OneDrive. Don't select a different label to complete this task.
 
-1. On the **Label policies** page, select **Publish labels**.
+1. In the **Microsoft Purview portal**, select the **Microsoft 365 app launcher** (the nine-dot icon in the upper-left corner).
 
-1. On the **Choose sensitivity labels to publish** page, select **Choose sensitivity labels to publish**.
+1. Select **Word**. If Word isn't listed, select **More apps**, then select **Word**.
 
-1. On the **Sensitivity labels to publish** flyout, select the checkboxes for:
+1. In **Word for the web**, confirm that you're signed in with the lab account provided for **Alex Wilber**, then create a **Blank document**.
 
-   - **General/All Employees (unrestricted)**
-   - Select **Add**
+1. Select the document name at the top of the page and rename it to `Contoso financial planning summary`. The document is saved automatically to your lab account's OneDrive.
 
-1. Back on the **Choose sensitivity labels to publish** page, select **Next** through the remaining pages until you reach the **Policy settings** page.
+1. Enter the following fictional content:
 
-1. On the **Policy settings** page, enable  **Users must provide a justification to remove a label or lower its classification**.
+   ```text
+   Contoso financial planning summary
+   Fictional information for training purposes only.
 
-1. Select **Next**.
+   Proposed quarterly budget: $125,000
+   Forecast operating expenses: $98,000
 
-1. On the **Default settings for documents​** page, under **Apply a default label to documents​**, select the dropdown to change the **Default label** from **None** to **General/All Employees (unrestricted)**.
+   This draft contains internal financial planning information.
+   Review and approve the figures before distributing the summary.
+   ```
 
-1. Select **Next**.
+   Don't enter real payment details or other sensitive information. This document doesn't need credit card numbers because you'll apply the label manually.
 
-1. On the **Default settings for emails** page:
+1. On the **Home** tab, select **Sensitivity** > **Internal** > **Financial data**.
 
-   - Under **Apply a default label to emails**, select the dropdown to change the **Default label** from **Same as document** to **General/All Employees (unrestricted)**.
-   - Under **Inherit label from attachments**, select the checkbox for **Email inherits highest priority label from attachments**.
-   - Leave the default **Automatically apply label** option.
+1. Confirm that Word for the web displays **Financial data** as the document's sensitivity label.
 
-1. Select **Next**.
+1. Scroll to the bottom of the page and confirm that the footer contains:
 
-1. On the **Default settings for meetings and calendar events** page:
+   `Contoso Financial Data - Internal Use Only`
 
-   - Under **Apply a default label to meetings and calendar events**, select the dropdown to change the **Default label** from **Same as document** to **General/All Employees (unrestricted)**.
-   - Select the checkbox for **Require users to apply a label to their meetings and calendar events**.
-   - Under **Apply inheritance between Teams meeting and artifacts**, leave the default **Automatically apply highest priority label** option.
+1. Wait until Word indicates that your changes are saved.
 
-1. Select **Next**.
-
-1. On the **Default settings for Fabric and Power BI content​** page, under **Apply a default label to Fabric and Power BI content​**, select the dropdown to change the **Default label** from **None** to **General/All Employees (unrestricted)**.
-
-1. Select **Next**.
-
-1. On the **Name your policy** page, enter:
-
-   - **Name**: `General default labeling`
-   - **Description**: `Applies General and General/All Employees (unrestricted) labels by default across supported workloads.`
-
-1. Select **Next**, then on the **Review and finish** page, select **Submit**.
-
-1. On the **New policy created** page, select **Done**.
-
-You created a default labeling policy that applies the General/All Employees (unrestricted) label to new documents, emails, meetings, and Fabric content. This enforces a consistent baseline for internal data protection across workloads.
+You manually classified a financial document and verified its label and visible footer. The budget figures don't match the credit card number rule, which demonstrates why manual classification still matters. The label doesn't restrict access or block Copilot by itself; the next lab adds a label-based DLP control.
 
 ## Lab complete
 
-You created and tested a custom sensitive information type, built and published sensitivity labels, configured auto-apply labeling, and enforced a default labeling policy. Together, these steps ensure that all new content begins with a baseline level of protection and that project data is automatically classified before it can appear in Copilot responses or be shared inappropriately.
+You helped Alex Wilber establish a classification foundation for Contoso's use of Microsoft 365 Copilot. You created and published a financial data label, configured an auto-labeling policy in simulation mode to detect credit card numbers, and manually labeled a sample financial document. These changes help distinguish sensitive financial information from general internal content without changing who can access it.
 
-If you'd like to extend this scenario, continue to the bonus task to add a DLP safeguard that controls how Copilot handles labeled project data.
+Continue to the [data loss prevention lab](./2-data-loss-prevention.md) to add a DLP safeguard that controls how Copilot handles labeled financial data.
