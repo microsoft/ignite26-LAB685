@@ -1,0 +1,271 @@
+---
+lab:
+    title: 'Prevent data exposure in Copilot and AI apps with Data Loss Prevention'
+    module: 'Prevent data exposure in Copilot and AI apps with Data Loss Prevention'
+---
+
+# Lab – Prevent data exposure in Copilot and AI apps with Data Loss Prevention
+
+Megan Bowen, the Information Security Administrator at Contoso Ltd., is strengthening protections as the company expands its use of Microsoft 365 Copilot. Leadership wants to ensure sensitive information isn't processed by Copilot or shared with external AI tools. To meet this goal, Megan will configure and refine data loss prevention (DLP) policies that restrict Copilot from accessing highly confidential project data, prevent banking details from being uploaded to AI websites, and improve how DLP alerts are managed and reported.
+
+**Tasks**:
+
+1. Create a DLP policy in simulation mode
+1. Activate a policy in simulation mode
+1. Create an endpoint DLP policy
+1. Configure DLP alert settings
+1. Configure DLP alert aggregation
+
+## Task 1 – Create a DLP policy in simulation mode
+
+In this task, you'll create a data loss prevention (DLP) policy that restricts Microsoft 365 Copilot from processing content labeled as highly confidential.
+
+1. With the lab environment ready, open **Microsoft Edge**.
+
+1. In **Microsoft Edge**, navigate to `https://purview.microsoft.com` and sign in as **Megan Bowen** (`MeganB@WWLxZZZZZZ.onmicrosoft.com`, where ZZZZZZ is your unique tenant ID). Use the password provided by your lab host.
+
+1. When prompted to stay signed in, you can select either **Yes**.
+
+1. Select **Get started** on the welcome message for the new Microsoft Purview portal.
+
+    ![Screenshot showing the Welcome to the new Microsoft Purview portal screen.](./media/welcome-purview-portal.png)
+
+1. From the left sidebar, select **Solutions** > **Data Loss Prevention** > **Policies**.
+
+1. On the **Policies** page, select **+ Create policy** to start the configuration for creating a new data loss prevention policy.
+
+1. On the **Choose what type of data to protect** page, select **Data stored in connected sources**, then select **Next**.
+
+1. On the **Start with a template or create a custom policy** page, select **Custom** as the category, then select **Custom policy** under **Regulations**.
+
+1. Select **Next**.
+
+1. On the **Name your DLP policy** page, enter:
+
+   - **Name**: `Copilot restrict highly confidential data`
+   - **Description**: `Restricts Copilot from processing content labeled Highly Confidential.`
+
+1. Select **Next**.
+
+1. On the **Assign admin units** page select **Next**.
+
+1. On the **Choose locations to apply the policy** page, select the location for **Microsoft 365 Copilot** only. If any other locations are selected, deselect them.
+
+1. On the **Choose locations to apply the policy**, in the **Actions** column for Microsoft 365 Copilot, select **Edit** to change the scope.
+
+    ![Screenshot of the Microsoft 365 Copilot location selected in a DLP policy. The scope shows “All users & groups” with an Edit option highlighted.](./media/dlp-scope-users.png)
+
+1. On the **Scope for Copilot for Microsoft 365 (preview)** flyout:
+
+   - Select **Specific users and groups**
+   - Under **Specific users and groups**, select **Include** > **Include groups**
+   - On the **Choose groups** flyout, select the checkbox for **Mark 8 Project Team**
+   - Select **Done** at the bottom of the **Choose groups** flyout
+   - Select **Done** at the bottom of the **Scope for Copilot for Microsoft 365 (preview)** flyout
+
+1. Back on the **Choose where to apply the policy** page, select **Next**.
+
+1. On the **Define policy settings** page, leave the default **Create or customize advanced DLP rules** selected, then select **Next**.
+
+1. On the **Customize advanced DLP rules** page, select **+ Create rule**.
+
+1. In the **Create rule** flyout, in the **Name** field, enter `Restrict Copilot highly confidential`.
+
+1. Under **Conditions**, select **+ Add condition** > **Content contains**.
+
+1. In the **Content contains** section, select **Add** > **Sensitivity labels**.
+
+   ![Screenshot of the Conditions pane in Microsoft Purview with Content contains selected and the Add menu showing Sensitivity labels.](./media/dlp-condition-sensitivity-label.png)
+
+1. In the **Sensitivity labels** flyout, select the checkbox for **Specified People**, then select **Add** at the bottom of the flyout.
+
+1. Back on the **Create rule** flyout, under **Actions** select **+ Add an action** > **Restrict Copilot from processing content**.
+
+1. Select **Save** at the bottom of the **Create rule** flyout.
+
+1. Back on the **Customize advanced DLP rules** page, select **Next**
+
+1. On the **Policy mode** page select **Run the policy in simulation mode**, then select both checkboxes:
+
+   - Show policy tips while in simulation mode
+   - Turn the policy on if it's not edited within fifteen days of simulation
+
+1. Select **Next**.
+
+1. On the **Review and finish** page review your settings then select **Submit**.
+
+    >[!Note] **Note:** If you see a **Permission required** label, it indicates that administrative consent is needed to enable the policy across some locations. This will not affect completion of this exercise.
+
+1. On the **New policy created** page select **Done**.
+
+You've created a DLP policy in simulation mode that prevents Copilot from processing highly confidential content.
+
+## Task 2 – Activate a policy in simulation mode
+
+In this task, you'll activate the DLP for Copilot policy and explore the insights available in simulation mode.
+
+1. On the **Policies** page select the **Copilot restrict highly confidential data** policy.
+
+1. At the bottom of the flyout on the right, select **View simulation**.
+
+1. On the simulation page, take a moment to explore:
+
+   - The **Simulation overview** tab, which shows scanning progress, total matches, and scanning status by location.
+   - The **Items for review tab**, where any predicted matches will appear once available.
+   - The **Alerts tab**, where any alerts triggered in simulation mode would be listed.
+
+1. After exploring the insights in simulation mode, select **Turn the policy on** then **Confirm** to activate the DLP policy.
+
+   A confirmation flyout will appear indicating that the policy has been published successfully.
+
+You've activated the DLP for Copilot policy, moving it from simulation mode to active enforcement.
+
+## Task 3 – Create an endpoint DLP policy
+
+In this task, you'll create an endpoint DLP policy that blocks users from pasting or uploading banking data, such as credit card numbers and routing information, into AI websites.
+
+1. On the **Policies** page of the **Data Loss Prevention** solution of the Microsoft Purview portal, select **+ Create policy**.
+
+1. On the **Choose what type of data to protect** page, select **Data stored in connected sources**, then select **Next**.
+
+1. On the **Start with a template or create a custom policy** page, select **Custom** and **Custom policy**, then select **Next**.
+
+1. On the **Name your DLP policy** page, enter:
+
+    - **Name**: `Block AI website uploads of banking data`
+    - **Description**: `Prevent users from pasting or uploading banking information, such as credit card or routing numbers, to AI websites.`
+
+1. Select **Next**.
+
+1. On the **Assign admin units** page, select **Next**.
+
+1. On the **Choose locations to apply the policy** page, ensure only the **Devices** location is selected. If any other location is selected, ensure they're deselected, then select **Next**.
+
+1. On the **Define policy settings** page, select **Create or customize advanced DLP rules** then select **Next**.
+
+1. On the **Customize advanced DLP rules** page, select **+ Create rule**.
+
+1. In the **Create rule** flyout, in the **Name** field, enter `Block banking data exposure to AI websites`.
+
+1. Under **Conditions** select **+ Add condition** then select **Content contains**.
+
+1. In the new **Content contains** section:
+
+    - Select **Add** > **Sensitive info types**.
+    - In the **Sensitive info types** flyout, search for these sensitive info types:
+       - `Credit Card Number`
+       - `ABA Routing Number`
+       - `SWIFT Code`
+       - `International Banking Account Number (IBAN)`
+    - Select **Add** at the bottom of the flyout
+
+1. Under **Actions**, select **+ Add an action** > **Audit or restrict activities on devices**.
+
+1. In the **Service domain and browser activities** section:
+
+   1. Select the checkbox for **Upload to a restricted cloud service domain or access from an unallowed browser**.
+
+   1. Next to this option, select **+ Choose different restrictions for sensitive service domains**.
+
+   1. In the **Sensitive service domain restrictions** flyout:
+
+      - Select **+ Add group**.
+      - In the **Choose sensitive service domain groups** flyout, select the checkbox for **Generative AI Websites**, then select **Add**.
+      - Back on the **Sensitive service domain restrictions** flyout, change the action in the dropdown from **Audit only** to **Block**.
+      - Select **Save**.
+
+   1. In the **Create rule** flyout, under **Upload to a restricted cloud service domain or access from an unallowed browser**, set the restriction to **Audit only**.
+
+1. In the same **Service domain and browser activities** section:
+
+   1. Select the checkbox for **Paste to supported browsers**.
+
+   1. Next to this option, select **+ Choose different restrictions for sensitive service domains**.
+
+   1. In the **Sensitive service domain restrictions** flyout:
+
+      - Select **+ Add group**.
+      - In the **Choose sensitive service domain groups** flyout, select the checkbox for **Generative AI Websites**, then select **Add**.
+      - Back on the **Sensitive service domain restrictions** flyout, change the action in the dropdown from **Audit only** to **Block**.
+      - Select **Save**.
+
+   1. In the **Create rule** flyout, under **Paste to supported browsers**, set the restriction to **Audit only**.
+
+1. Under **User notifications**:
+
+    - Turn **On** the toggle for **Use notifications to inform your users and help educate them on the proper use of sensitive info.**.
+    - Select the checkbox to **Show users a policy tip notification when an activity is restricted**.
+
+1. Select **Save** at the bottom of the **Create rule** flyout.
+
+1. Back on the **Customize advanced DLP rules**, select **Next**.
+
+1. On the **Policy mode** page select **Turn the policy on immediately**.
+
+1. Select **Next**.
+
+1. On the **Review and finish** page, review your policy settings then select **Submit** to create the policy.
+
+1. Once the policy is created select **Done** on the **New policy created** page.
+
+You've created an endpoint DLP policy that blocks banking data from being pasted or uploaded into AI websites.
+
+## Task 4 – Configure DLP alert settings
+
+Now that the DLP rule is in place, you'll configure alert settings so DLP incidents are routed to the right administrator for timely review.
+
+1. On the **Policies** page of the **Data Loss Prevention**, select the **Block AI website uploads of banking data** policy, then select **Edit policy** (pencil) icon (![Icon of a pencil.](./media/edit-pencil-icon.png)).
+
+1. Select **Next** until you reach the **Customize advanced DLP rules** page.
+
+1. Select the pencil icon (![Icon of a pencil.](./media/edit-pencil-icon.png)) to the right of the **Block banking data exposure to AI websites** rule to edit the rule.
+
+1. In the **Edit rule** flyout, scroll down to the **Incident reports** section.
+
+1. In the **Incident reports** section:
+
+   - In **Use this severity level in admin alerts and reports**, set the dropdown to **Medium**.
+
+   - Ensure the toggle is set to **On** for **Send an alert to admins when a rule match occurs**.
+
+   - Under **Send email alerts to these people (optional)**, select **+ Add or remove users**.
+
+      - In the **Add or remove users** flyout, search for, then select `MOD Administrator`
+
+      - Select the checkbox to the left of the **MOD Administrator** account, then select **Add** at the bottom of the flyout.
+
+   - Select **Send alert every time an activity matches the rule**.
+
+1. Select **Save** at the bottom of the flyout.
+
+1. Back on the **Customize advanced DLP rules** page, select **Next**.
+
+1. On the **Policy mode** page, leave the selection **Turn the policy on immediately**, then select **Next**.
+
+1. On the **Review and finish** page, review your policy settings then select **Submit** to create the policy.
+
+1. Select **Done** on the **Policy updated** page.
+
+You configured incident alert settings so that medium-severity DLP alerts are sent to the MOD Administrator account whenever a rule match occurs.
+
+## Task 5 – Configure DLP alert aggregation
+
+Frequent Copilot or AI website activity can trigger many DLP rule matches in a short time. You'll configure alert aggregation so repeated events from the same user are grouped into a single alert.
+
+1. In the Microsoft Purview portal, go to **Settings** > **Data Loss Prevention**.
+
+1. On the **Data Loss Prevention settings** page, select **Aggregate DLP alerts by user** from the left panel of the settings options.
+
+1. On the **Aggregate DLP alerts by user** page, turn the toggle on.
+
+1. In the **Alert aggregation window (in minutes)** dropdown, select **30**.
+
+1. Select **Save**.
+
+You've configured alert aggregation so multiple DLP detections from the same user within a 30-minute window are combined into one alert.
+
+## Lab complete
+
+You configured DLP policies that prevent Copilot from processing highly confidential content and block regulated data, such as banking information, from being pasted or uploaded to AI websites. You also set up incident alerts and alert aggregation to improve how DLP detections are routed and reviewed. Together, these configurations strengthen Contoso's ability to protect sensitive information in Copilot and other AI environments, and set the stage for **Adaptive Protection** to enforce them dynamically.
+
+If you'd like to extend this scenario, continue to the bonus task to use Adaptive Protection so these safeguards apply dynamically based on insider risk signals.
