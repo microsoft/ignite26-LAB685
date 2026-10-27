@@ -2,12 +2,6 @@
 
 Alex wants to protect financial information without blocking every employee's AI activity. You'll configure AI risk detection, connect it to Adaptive Protection, and update the banking-data endpoint policy from the DLP section. Its blocking actions will require both matching banking content and an Elevated insider risk level.
 
-> [!NOTE]
-> This section focuses on configuration, not generating live alerts or risk levels. Results take time to populate. Risk signals support review; they aren't proof of misconduct.
-
-> [!NOTE]
-> AI detection requires appropriate licensing, permissions, and signal collection, including browser extensions on monitored devices. See the [Risky AI usage prerequisites](https://learn.microsoft.com/en-us/purview/insider-risk-management-policy-templates#risky-ai-usage). You won't install extensions or submit sensitive information to AI services in this exercise.
-
 **Tasks**:
 
 1. Configure analytics and AI risk indicators
