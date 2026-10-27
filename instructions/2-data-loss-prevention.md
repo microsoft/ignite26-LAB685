@@ -1,220 +1,232 @@
-# Lab – Manage sensitive data using Microsoft Purview Information Protection in the age of AI
+# Lab – Prevent data exposure in Copilot and AI apps with Data Loss Prevention
 
-Alex Wilber, Contoso's Information Security Administrator, needs employees to recognize sensitive financial information as they work with Microsoft 365 Copilot. You'll help Alex create and publish a sensitivity label, configure automatic detection of credit card numbers, and label a sample document. This classification work sets up the DLP controls you'll configure in the next section.
-
-> [!NOTE]
-> Copilot respects users' existing access permissions. The Financial data label you'll create adds classification and a footer, not encryption or a Copilot restriction.
+Alex now needs controls for how sensitive content is used with AI. You'll enable a label-based Copilot restriction and prepare an endpoint DLP policy for banking information sent to AI websites. Keep the endpoint policy in simulation until you add an insider risk condition in the next section.
 
 **Tasks**:
 
-1. Create a label group and a financial data label
-1. Publish sensitivity labels
-1. Configure auto-apply labeling
-1. Apply the Confidential/All Employees label to a document
+1. Create a DLP policy for Copilot
+1. Create an endpoint DLP policy
+1. Configure DLP alert settings
+1. Configure DLP alert aggregation
 
-## Task 1 – Create a label group and a financial data label
+## Task 1 – Create a DLP policy for Copilot
 
-Create an Internal label group and a Financial data label. The label's footer will help employees recognize sensitive financial content intended for internal use.
-
-1. In the **Microsoft Purview portal**, navigate to **Solutions** > **Information Protection**.
-
-1. On the **Information Protection** page, select **Sensitivity labels** from the left navigation.
-
-1. On the **Sensitivity labels** page, select **+ Create** > **Label group**.
-
-1. On the **Provide basic details for this label group** page, enter:
-
-   - **Name**: `Internal`
-   - **Display name**: `Internal`
-   - **Description for users**: `Use this label for internal Contoso content.`
-   - **Description for admins**: `Label group for internal Contoso content, including financial data.`
-
-1. Select **Next**.
-
-1. On the **Review your settings and finish** page, select **Create label group**.
-
-1. On the **Your label group was created successfully** page, select **Create a label in this group**, then select **Done**.
-
-1. On the **Provide basic details for this label** page enter:
-
-   - **Name**: `Financial data`
-   - **Display name**: `Financial data`
-   - **Description for users**: `Use this label for documents and emails that contain sensitive financial information, such as credit card numbers.`
-   - **Description for admins**: `Classifies sensitive financial content with a visible footer and supports auto-labeling and label-based DLP policies.`
-
-1. Select **Next**.
-
-1. On the **Define the scope for this label** page, select **Files & other data assets** and **Emails**. Make sure **Meetings** is deselected.
-
-1. On the **Choose protection settings for labeled items** page, select **Apply content marking**, then select **Next**.
-
-1. On the **Content marking** page, enable **Content marking**.
-
-1. Select the checkbox for **Add a footer**, then select **Customize text**.
-
-1. In the **Customize footer text** flyout, enter:
-
-   - **Footer text**: `Contoso Financial Data - Internal Use Only`
-   - **Font size**: `10`
-   - **Font color**: Black
-   - **Align text**: Left
-   - Select **Save**.
-
-1. Back on the **Content marking** page, select **Next**.
-
-1. Keep the default settings on the remaining pages by selecting **Next** until you reach the **Review your settings and finish** page.
-
-1. Select **Create label**.
-
-1. On the **Your sensitivity label was created** page, select **Don't create a policy yet**, then select **Done**.
-
-Your Financial data label is ready. Next, publish it so employees can apply it to their content.
-
-## Task 2 – Publish sensitivity labels
-
-Publish the Financial data label to make it available to users. You'll also select it in the auto-labeling policy in the next task.
-
-1. In the Microsoft Purview portal, under **Information Protection**, expand **Policies** then select **Label publishing policies**.
-
-1. On the **Label policies** page, select **Publish labels**.
-
-1. On the **Choose sensitivity labels to publish** page, select **Choose sensitivity labels to publish**.
-
-1. On the **Sensitivity labels to publish** flyout, select the checkbox for:
-
-   - **Internal/Financial data**
-   - Select **Add**
-
-1. Back on the **Choose sensitivity labels to publish** page, select **Next** through the remaining pages until you reach the **Name your policy** page.
-
-1. On the **Name your policy** page, enter:
-
-   - **Name**: `Internal financial data`
-   - **Description**: `Makes the Financial data label in the Internal label group available for users to apply to documents and emails.`
-
-1. Select **Next**, then on the **Review and finish** page, select **Submit**.
-
-1. On the **New policy created** page, select **Done**.
-
-You've published Internal/Financial data. Next, configure a policy to apply it when credit card numbers are detected.
-
-## Task 3 – Configure auto-apply labeling
-
-Configure an auto-labeling policy using the built-in Credit card number sensitive information type (SIT). Start in simulation mode to evaluate matches before applying the Financial data label.
+Create and enable a policy that restricts Copilot from processing content labeled Confidential/All Employees. Keep the default scope of all users and groups.
 
 > [!NOTE]
-> This rule detects credit card numbers, not all financial information. Simulation evaluates matches without applying labels. The policy is set to activate after seven days if it isn't modified.
+> Select Confidential/All Employees, the label on your sample document. The policy will target all content with this label, not just that document.
 
-1. In the Microsoft Purview portal, under **Information Protection**, expand **Policies** then select **Auto-labeling policies**.
+You'll enable the policy directly for this lab exercise. In production, start in simulation mode and review policy matches before enabling enforcement.
 
-1. On the **Auto-labeling policies** page, select **+ Create auto-labeling policy**.
+1. Return to the **Microsoft Purview portal** browser tab. From the left sidebar, select **Solutions** > **Data Loss Prevention** > **Policies**.
 
-1. On the **What type of auto-labeling policy do you want to create?** page, select **Automatically apply labels only**.
+1. On the **Policies** page, select **+ Create policy** .
 
-1. On the **Choose info you want this label applied to** page, create a policy in a **Custom** category for a **Custom policy** regulation.
+1. On the **What info do you want to protect** page, select **Enterprise applications & devices**.
 
-1. Select **Next**.
-
-1. On the **Name your auto-labeling policy** page, enter:
-
-   - **Name**: `Auto-apply financial data`
-   - **Description**: `Automatically applies the Financial data sensitivity label when credit card numbers are detected.`
+1. On the **Start with a template or create a custom policy** page, select **Custom** as the category, then select **Custom policy** under **Regulations**.
 
 1. Select **Next**.
 
-1. On the **Choose a label to auto-apply** page, select **+ Choose a label**.
+1. On the **Name your DLP policy** page, enter:
 
-1. On the **Choose a sensitivity label** flyout, select the checkbox for **Internal/Financial data**, then select **Add**.
-
-1. Back on the **Choose a label to auto-apply** page, select **Next**.
-
-1. On the **Assign admin units** page, select **Next**.
-
-1. On the **Choose locations where you want to apply the label** page, select:
-
-   - **Exchange email**
-   - **SharePoint sites**
-   - **OneDrive accounts**
+   - **Name**: `Copilot restrict confidential content`
+   - **Description**: `Restricts Copilot from processing content labeled Confidential/All Employees.`
 
 1. Select **Next**.
 
-1. On the **Set up common or advanced rules** page, select **Common rules**, then select **Next**.
+1. On the **Assign admin units** page select **Next**.
 
-1. On the **Define rules for content in all locations** page, select **+ New rule**.
+1. On the **Choose locations to apply the policy** page, select the location for **Microsoft Copilot and Copilot Chat** only. If any other locations are selected, deselect them.
 
-1. In the **New rule** flyout, enter:
+1. Keep the default **All users & groups** scope for Microsoft 365 Copilot, then select **Next**.
 
-   - **Name**: `Credit card number rule`
-   - **Description**: `Detects credit card numbers using the built-in Credit card number sensitive information type.`
+1. On the **Define policy settings** page, leave the default **Create or customize advanced DLP rules** selected, then select **Next**.
+
+1. On the **Customize advanced DLP rules** page, select **+ Create rule**.
+
+1. In the **Create rule** flyout, in the **Name** field, enter `Restrict Copilot confidential content`.
 
 1. Under **Conditions**, select **+ Add condition** > **Content contains**.
 
-1. Under the **Content contains** section, select **+ Add** > **Sensitive info types**.
+1. In the **Content contains** section, select **Add** > **Sensitivity labels**.
 
-1. In the **Sensitive info types** list, search for and select `Credit card number`, then select **Add**.
+   ![Screenshot of the Conditions pane in Microsoft Purview with Content contains selected and the Add menu showing Sensitivity labels.](./media/dlp-condition-sensitivity-label.png)
 
-1. Select **Save** to finish creating the rule.
+1. In the **Sensitivity labels** flyout, select the checkbox for **All Employees** with the label path **Confidential/All Employees**, then select **Add** at the bottom of the flyout.
+
+1. Back on the **Create rule** flyout, under **Actions** select **+ Add an action** > **Restrict Copilot from processing content**.
+
+1. Select **Save** at the bottom of the **Create rule** flyout.
+
+1. Back on the **Customize advanced DLP rules** page, select **Next**
+
+1. On the **Policy mode** page select **Turn the policy on immediately**, then select **Next**.
+
+1. On the **Review and finish** page, verify the following settings, then select **Submit**:
+
+   - **Location**: Microsoft Copilot and Copilot Chat only
+   - **Scope**: All users & groups
+   - **Sensitivity label**: Confidential/All Employees
+   - **Action**: Restrict Copilot from processing content
+   - **Policy mode**: Turn the policy on immediately
+
+1. On the **New policy created** page select **Done**.
+
+Your Copilot policy is enabled for content labeled Confidential/All Employees. Next, configure a different control for banking information sent to AI websites.
+
+> [!NOTE]
+> Copilot policy changes can take up to four hours to take effect. Verify the policy configuration to complete this task; a live blocking demonstration isn't required.
+
+## Task 2 – Create an endpoint DLP policy
+
+The Copilot policy checks a document's label. Next, prepare an endpoint policy that detects banking information directly. Configure blocking actions for AI websites, but leave the policy in simulation until you add the Elevated risk condition in the IRM section.
+
+> [!NOTE]
+> Endpoint enforcement requires supported, onboarded devices and browsers. Creating this policy doesn't onboard devices.
+
+1. On the **Policies** page of the **Data Loss Prevention** solution of the Microsoft Purview portal, select **+ Create policy**.
+
+1. On the **Choose what type of data to protect** page, select **Data stored in connected sources**, then select **Next**.
+
+1. On the **Start with a template or create a custom policy** page, select **Custom** and **Custom policy**, then select **Next**.
+
+1. On the **Name your DLP policy** page, enter:
+
+    - **Name**: `Block AI website uploads of banking data`
+    - **Description**: `Prepared in simulation for risk-based blocking of banking data uploads and pasting to AI websites. Add the Elevated risk condition before enabling enforcement.`
 
 1. Select **Next**.
 
-1. On the **Additional settings for email** page, select **Next**.
+1. On the **Assign admin units** page, select **Next**.
 
-1. On the **Decide if you want to test out the policy now or later** page, select **Run policy in simulation mode**, and select the checkbox for **Automatically turn on policy if not modified after 7 days in simulation**.
+1. On the **Choose locations to apply the policy** page, ensure only the **Devices** location is selected. If any other location is selected, ensure they're deselected, then select **Next**.
+
+1. On the **Define policy settings** page, select **Create or customize advanced DLP rules** then select **Next**.
+
+1. On the **Customize advanced DLP rules** page, select **+ Create rule**.
+
+1. In the **Create rule** flyout, in the **Name** field, enter `Block banking data exposure to AI websites`.
+
+1. Under **Conditions** select **+ Add condition** then select **Content contains**.
+
+1. In the new **Content contains** section:
+
+    - Select **Add** > **Sensitive info types**.
+    - In the **Sensitive info types** flyout, search for these sensitive info types:
+       - `Credit Card Number`
+       - `ABA Routing Number`
+       - `SWIFT Code`
+       - `International Banking Account Number (IBAN)`
+    - Select **Add** at the bottom of the flyout
+
+1. Under **Actions**, select **+ Add an action** > **Audit or restrict activities on devices**.
+
+1. In the **Service domain and browser activities** section:
+
+   1. Select the checkbox for **Upload to a restricted cloud service domain or access from an unallowed browser**.
+
+   1. Next to this option, select **+ Choose different restrictions for sensitive service domains**.
+
+   1. In the **Sensitive service domain restrictions** flyout:
+
+      - Select **+ Add group**.
+      - In the **Choose sensitive service domain groups** flyout, select the checkbox for **Generative AI Websites**, then select **Add**.
+      - Back on the **Sensitive service domain restrictions** flyout, change the action in the dropdown from **Audit only** to **Block**.
+      - Select **Save**.
+
+   1. In the **Create rule** flyout, under **Upload to a restricted cloud service domain or access from an unallowed browser**, set the restriction to **Audit only**.
+
+1. In the same **Service domain and browser activities** section:
+
+   1. Select the checkbox for **Paste to supported browsers**.
+
+   1. Next to this option, select **+ Choose different restrictions for sensitive service domains**.
+
+   1. In the **Sensitive service domain restrictions** flyout:
+
+      - Select **+ Add group**.
+      - In the **Choose sensitive service domain groups** flyout, select the checkbox for **Generative AI Websites**, then select **Add**.
+      - Back on the **Sensitive service domain restrictions** flyout, change the action in the dropdown from **Audit only** to **Block**.
+      - Select **Save**.
+
+   1. In the **Create rule** flyout, under **Paste to supported browsers**, set the restriction to **Audit only**.
+
+1. Under **User notifications**:
+
+    - Turn **On** the toggle for **Use notifications to inform your users and help educate them on the proper use of sensitive info.**.
+    - Select the checkbox to **Show users a policy tip notification when an activity is restricted**.
+
+1. Select **Save** at the bottom of the **Create rule** flyout.
+
+1. Back on the **Customize advanced DLP rules**, select **Next**.
+
+1. On the **Policy mode** page, select **Run the policy in simulation mode**. Leave automatic activation after fifteen days unchecked.
 
 1. Select **Next**.
 
-1. On the **Review and finish** page, select **Create policy**.
+1. On the **Review and finish** page, review your policy settings then select **Submit** to create the policy.
 
-1. On the confirmation page, select **Done**.
+1. Once the policy is created select **Done** on the **New policy created** page.
 
-Your auto-labeling policy is configured in simulation mode. Next, apply a label manually to content that doesn't contain credit card numbers.
+Your endpoint policy is saved in simulation and won't block activity yet. Next, configure alerts; keep it in simulation until the risk condition is added.
 
-## Task 4 – Apply the Confidential/All Employees label to a document
+## Task 3 – Configure DLP alert settings
 
-Create a fictional budget summary in Word for the web and apply Confidential/All Employees. This gives you a labeled document for the next section's Copilot DLP policy.
+Configure medium-severity email alerts for the endpoint rule so the MOD Administrator can review matching activity.
 
-> [!NOTE]
-> New labels can take time to synchronize across Word and DLP. Use the preconfigured Confidential/All Employees label for this document and the following DLP exercise, even if Financial data is available.
+1. On the **Policies** page of the **Data Loss Prevention**, select the **Block AI website uploads of banking data** policy, then select **Edit policy** (pencil) icon (![Icon of a pencil.](./media/edit-pencil-icon.png)).
 
-> [!NOTE]
-> If Sensitivity is unavailable, check your lab account and SharePoint/OneDrive labeling support. If Confidential/All Employees is missing, contact your instructor rather than selecting another label.
+1. Select **Next** until you reach the **Customize advanced DLP rules** page.
 
-1. In the **Microsoft Purview portal**, select the **Microsoft 365 app launcher** (the nine-dot icon in the upper-left corner).
+1. Select the pencil icon (![Icon of a pencil.](./media/edit-pencil-icon.png)) to the right of the **Block banking data exposure to AI websites** rule to edit the rule.
 
-1. Select **Word**. If Word isn't listed, select **More apps**, then select **Word**.
+1. In the **Edit rule** flyout, scroll down to the **Incident reports** section.
 
-1. In **Word for the web**, confirm that you're signed in with the lab account provided for **Alex Wilber**, then create a **Blank document**.
+1. In the **Incident reports** section:
 
-1. Select the document name at the top of the page and rename it to `Contoso financial planning summary`. The document is saved automatically to your lab account's OneDrive.
+   - In **Use this severity level in admin alerts and reports**, set the dropdown to **Medium**.
 
-1. Enter the following fictional content:
+   - Ensure the toggle is set to **On** for **Send an alert to admins when a rule match occurs**.
 
-   ```text
-   Contoso financial planning summary
-   Fictional information for training purposes only.
+   - Under **Send email alerts to these people (optional)**, select **+ Add or remove users**.
 
-   Proposed quarterly budget: $125,000
-   Forecast operating expenses: $98,000
+      - In the **Add or remove users** flyout, search for, then select `MOD Administrator`
 
-   This draft contains internal financial planning information.
-   Review and approve the figures before distributing the summary.
-   ```
+      - Select the checkbox to the left of the **MOD Administrator** account, then select **Add** at the bottom of the flyout.
 
-   Don't enter real payment details or other sensitive information. This document doesn't need credit card numbers because you'll apply the label manually.
+   - Select **Send alert every time an activity matches the rule**.
 
-1. On the **Home** tab, select **Sensitivity** > **Confidential** > **All Employees**.
+1. Select **Save** at the bottom of the flyout.
 
-1. Confirm that Word for the web displays **Confidential/All Employees** as the document's sensitivity label. If only **All Employees** is displayed, open the **Sensitivity** menu and confirm that the selected label is under **Confidential**, not **General** or **Highly Confidential**.
+1. Back on the **Customize advanced DLP rules** page, select **Next**.
 
-1. Wait until Word indicates that your changes are saved.
+1. On the **Policy mode** page, keep **Run the policy in simulation mode** selected and automatic activation unchecked, then select **Next**.
 
-> [!TIP]
-> Optional: If Internal/Financial data is available, try it on a separate document and check for the footer `Contoso Financial Data - Internal Use Only`. Keep Confidential/All Employees on your main sample document for the DLP exercise.
+1. On the **Review and finish** page, review your policy settings then select **Submit** to create the policy.
 
-Your budget summary is labeled. Because its figures don't match the credit card number rule, this demonstrates where manual classification complements automatic detection.
+1. Select **Done** on the **Policy updated** page.
+
+You've configured medium-severity alerts for the MOD Administrator. Next, group repeated detections to make alerts easier to review.
+
+## Task 4 – Configure DLP alert aggregation
+
+Group repeated DLP detections from the same user into a 30-minute window to reduce alert volume.
+
+1. In the Microsoft Purview portal, go to **Settings** > **Data Loss Prevention**.
+
+1. On the **Data Loss Prevention settings** page, select **Aggregate DLP alerts by user** from the left panel of the settings options.
+
+1. On the **Aggregate DLP alerts by user** page, turn the toggle on.
+
+1. In the **Alert aggregation window (in minutes)** dropdown, select **30**.
+
+1. Select **Save**.
+
+You've configured a 30-minute aggregation window to help administrators review repeated activity together.
 
 ## Section complete
 
-You've created and published Financial data, configured auto-labeling in simulation, and manually applied Confidential/All Employees to a sample document. Alex now has a classification foundation for the next layer of controls.
+You've enabled the Copilot restriction and prepared the banking-data endpoint policy and alerts. The endpoint policy is still in simulation. Next, add an Elevated risk condition so its blocking actions apply only when both content and user risk match.
 
-Continue to [data loss prevention](./2-data-loss-prevention.md) to configure Copilot restrictions and controls for external AI websites.
+Continue to [Insider Risk Management](./3-insider-risk-management.md) to configure AI risk detection and Adaptive Protection.
