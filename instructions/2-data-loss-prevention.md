@@ -6,7 +6,7 @@ lab:
 
 # Lab – Prevent data exposure in Copilot and AI apps with Data Loss Prevention
 
-Alex now needs controls for how sensitive content is used with AI. You'll enable a label-based Copilot restriction and prepare an endpoint DLP policy for banking information sent to AI websites. Keep the endpoint policy in simulation until you add an insider risk condition in the next section.
+Alex now needs controls for how sensitive content is used with AI. You'll enable a label-based Copilot restriction and prepare an endpoint DLP policy for banking information sent to AI websites. Keep the endpoint policy in simulation to evaluate matches without enforcing its blocking actions.
 
 **Tasks**:
 
@@ -63,19 +63,15 @@ You'll enable the policy directly for this lab exercise. In production, start in
 
 1. Back on the **Create rule** flyout, under **Actions** select **+ Add an action** > **Restrict Copilot from processing content**.
 
+1. Under **Restrict Copilot from processing content**, select **Accessing knowledge sources**. Ensure the dropdown is set to **Block**.
+
 1. Select **Save** at the bottom of the **Create rule** flyout.
 
 1. Back on the **Customize advanced DLP rules** page, select **Next**
 
 1. On the **Policy mode** page select **Turn the policy on immediately**, then select **Next**.
 
-1. On the **Review and finish** page, verify the following settings, then select **Submit**:
-
-   - **Location**: Microsoft Copilot and Copilot Chat only
-   - **Scope**: All users & groups
-   - **Sensitivity label**: Confidential/All Employees
-   - **Action**: Restrict Copilot from processing content
-   - **Policy mode**: Turn the policy on immediately
+1. On the **Review and finish** page, verify the settings, then select **Submit**.
 
 1. On the **New policy created** page select **Done**.
 
@@ -86,21 +82,21 @@ Your Copilot policy is enabled for content labeled Confidential/All Employees. N
 
 ## Task 2 – Create an endpoint DLP policy
 
-The Copilot policy checks a document's label. Next, prepare an endpoint policy that detects banking information directly. Configure blocking actions for AI websites, but leave the policy in simulation until you add the Elevated risk condition in the IRM section.
+The Copilot policy checks a document's label. Next, prepare an endpoint policy that detects banking information directly. Configure blocking actions for AI websites, but leave the policy in simulation for this exercise.
 
 > [!NOTE]
 > Endpoint enforcement requires supported, onboarded devices and browsers. Creating this policy doesn't onboard devices.
 
 1. On the **Policies** page of the **Data Loss Prevention** solution of the Microsoft Purview portal, select **+ Create policy**.
 
-1. On the **Choose what type of data to protect** page, select **Data stored in connected sources**, then select **Next**.
+1. On the **What info do you want to protect** page, select **Enterprise applications & devices**.
 
 1. On the **Start with a template or create a custom policy** page, select **Custom** and **Custom policy**, then select **Next**.
 
 1. On the **Name your DLP policy** page, enter:
 
     - **Name**: `Block AI website uploads of banking data`
-    - **Description**: `Prepared in simulation for risk-based blocking of banking data uploads and pasting to AI websites. Add the Elevated risk condition before enabling enforcement.`
+    - **Description**: `Protects banking information from being uploaded or pasted to AI websites.`
 
 1. Select **Next**.
 
@@ -160,8 +156,8 @@ The Copilot policy checks a document's label. Next, prepare an endpoint policy t
 
 1. Under **User notifications**:
 
-    - Turn **On** the toggle for **Use notifications to inform your users and help educate them on the proper use of sensitive info.**.
-    - Select the checkbox to **Show users a policy tip notification when an activity is restricted**.
+    - Turn **On** the toggle for **Use notifications to inform your users and help educate them on the proper use of sensitive info.**
+    - Select the checkbox to **Show users a policy tip notification when an activity is restricted...**.
 
 1. Select **Save** at the bottom of the **Create rule** flyout.
 
@@ -175,7 +171,7 @@ The Copilot policy checks a document's label. Next, prepare an endpoint policy t
 
 1. Once the policy is created select **Done** on the **New policy created** page.
 
-Your endpoint policy is saved in simulation and won't block activity yet. Next, configure alerts; keep it in simulation until the risk condition is added.
+Your endpoint policy is saved in simulation and won't block activity. Next, configure alerts while keeping the policy in simulation.
 
 ## Task 3 – Configure DLP alert settings
 
@@ -233,6 +229,6 @@ You've configured a 30-minute aggregation window to help administrators review r
 
 ## Section complete
 
-You've enabled the Copilot restriction and prepared the banking-data endpoint policy and alerts. The endpoint policy is still in simulation. Next, add an Elevated risk condition so its blocking actions apply only when both content and user risk match.
+You've enabled the Copilot restriction and prepared the banking-data endpoint policy and alerts. Leave the endpoint policy in simulation. Without a risk condition, enabling it would apply the content-based restrictions to all users in scope.
 
-Continue to [Insider Risk Management](./3-insider-risk-management.md) to configure AI risk detection and Adaptive Protection.
+Continue to [Insider Risk Management](./3-insider-risk-management.md) to configure detection of potentially risky AI activity.

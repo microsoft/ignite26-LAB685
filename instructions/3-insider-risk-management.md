@@ -1,19 +1,16 @@
-# Lab – Detect and adapt to risky AI usage with Insider Risk Management
+# Lab – Detect risky AI usage with Insider Risk Management
 
-Alex wants to protect financial information without blocking every employee's AI activity. You'll configure AI risk detection, connect it to Adaptive Protection, and update the banking-data endpoint policy from the DLP section. Its blocking actions will require both matching banking content and an Elevated insider risk level.
-
-> [!NOTE]
-> This section focuses on configuration, not generating live alerts or risk levels. Results take time to populate. Risk signals support review; they aren't proof of misconduct.
-
-> [!NOTE]
-> AI detection requires appropriate licensing, permissions, and signal collection, including browser extensions on monitored devices. See the [Risky AI usage prerequisites](https://learn.microsoft.com/en-us/purview/insider-risk-management-policy-templates#risky-ai-usage). You won't install extensions or submit sensitive information to AI services in this exercise.
+Alex wants to understand potentially risky AI activity alongside the controls configured for financial information. You'll enable AI indicators, create an Insider Risk Management policy, and prepare a notice template for reviewer follow-up. The policy evaluates AI activity, not just financial content, and doesn't change DLP enforcement.
 
 **Tasks**:
 
 1. Configure analytics and AI risk indicators
 1. Create a Risky AI usage policy
-1. Configure insider risk levels
+1. Create a notice template for AI usage guidance
+<!-- Adaptive Protection tasks retained for future validation.
+1. Connect the AI policy to Adaptive Protection
 1. Add risk-based enforcement to the existing endpoint policy
+-->
 
 ## Task 1 – Configure analytics and AI risk indicators
 
@@ -23,7 +20,7 @@ Enable analytics and select the Copilot and other AI activity indicators that yo
 
 1. On the **Insider Risk Management settings** page, select **Analytics** from the left navigation.
 
-1. On the **Analytics** page, under **Show insights at tenant level**, switch the toggle to **On**.
+1. On the **Analytics** page, under **Show insights at tenant level**, switch the toggle to **On**. This will also enable **Show insights at the user level**.
 
 1. Select **Save** at the bottom of the page.
 
@@ -36,17 +33,13 @@ Enable analytics and select the Copilot and other AI activity indicators that yo
    - Receiving sensitive response from Copilot
    - Entering risky prompt in Copilot
 
-   **Generative AI apps** > **Other AI apps**
-
-   - Entering risky prompt in other AI apps
-
 1. Select **Save** at the bottom of the page.
 
 Your AI indicators are enabled. Next, select the users and activities to evaluate in a Risky AI usage policy.
 
 ## Task 2 – Create a Risky AI usage policy
 
-Create an organization-wide AI risk policy using Microsoft's built-in thresholds. Its signals will supply user risk context for the banking-data endpoint rule, rather than detecting financial content itself.
+Create an organization-wide AI risk policy using Microsoft's built-in thresholds. This adds activity-based detection alongside the content-based DLP policies you configured earlier.
 
 1. In the Microsoft Purview portal, go to **Solutions** > **Insider Risk Management** > **Policies**.
 
@@ -57,7 +50,7 @@ Create an organization-wide AI risk policy using Microsoft's built-in thresholds
 1. On the **Name your policy** page, enter:
 
    - **Name**: `Risky AI usage - financial data protection`
-   - **Description**: `Evaluates potentially risky AI activity to inform Adaptive Protection for the banking-data endpoint DLP policy.`
+   - **Description**: `Identifies potentially risky Copilot prompts and sensitive responses to support review of AI usage.`
 
 1. Select **Next**.
 
@@ -65,7 +58,7 @@ Create an organization-wide AI risk policy using Microsoft's built-in thresholds
 
 1. On the **Exclude users and groups (optional)** page, leave exclusions empty, then select **Next**.
 
-1. On the **Decide whether to prioritize content** page, choose not to prioritize specific content, then select **Next**.
+1. On the **Decide whether to prioritize content** page, select **I don't want to prioritize content right now**, then select **Next**.
 
 1. On the **Choose triggering event for this policy** page, select **Risky or sensitive content in Microsoft Copilot experiences, Enterprise AI apps and web versions of other AI apps**.
 
@@ -73,7 +66,6 @@ Create an organization-wide AI risk policy using Microsoft's built-in thresholds
 
    - Entering risky prompt in Copilot
    - Receiving sensitive response from Copilot
-   - Entering risky prompt in other AI apps
 
     >[!Note] **Note:** If these triggers are already selected, confirm them and continue.
 
@@ -81,7 +73,7 @@ Create an organization-wide AI risk policy using Microsoft's built-in thresholds
 
 1. On the **Choose thresholds for triggering events** page, select **Apply built-in thresholds**, then select **Next**.
 
-1. On the **Indicators** page, expand each category and confirm that the Copilot and other AI apps indicators enabled in Task 1 are selected, then select **Next**.
+1. On the **Indicators** page, expand each category and confirm that the Copilot indicators enabled in Task 1 are selected, then select **Next**.
 
 1. On the **Detection options** page, leave the defaults selected, then select **Next**.
 
@@ -91,9 +83,42 @@ Create an organization-wide AI risk policy using Microsoft's built-in thresholds
 
 1. On the **Your policy was created** page, select **Done**.
 
-Your AI risk policy is configured. Next, connect it to Adaptive Protection's risk levels.
+Your AI risk policy is configured to evaluate potentially risky Copilot activity. Next, prepare guidance that a reviewer can use during case follow-up. No live alert is required.
 
-## Task 3 – Configure insider risk levels
+## Task 3 – Create a notice template for AI usage guidance
+
+Prepare a reusable message about handling financial information with AI. Reviewers can use the template when following up with an employee during case review.
+
+1. In the **Microsoft Purview portal**, go to **Solutions** > **Insider Risk Management** > **Users** > **Notice templates**.
+
+1. Select **Create notification template**.
+
+1. On the **New email notification template** page, enter:
+
+   - **Template name**: `Financial information and AI usage guidance`
+   - **Send from**: Enter the email address of Alex Wilber's lab account.
+   - **Subject**: `Reminder: Handling financial information with AI`
+   - **Message body**:
+
+     ```text
+     Please review how you use business information with Copilot and other AI tools.
+
+     Check the sensitivity label before sharing financial documents, and use only AI tools approved by Contoso. Don't enter payment details or other sensitive information into unapproved AI services.
+
+     If you're unsure how to handle information, contact your IT security team for guidance.
+
+     Thank you,
+     Contoso Security and Compliance Team
+     ```
+
+1. Select **Create** to save the template.
+
+1. Confirm that **Financial information and AI usage guidance** appears in the template list.
+
+You've prepared a consistent message for reviewer follow-up. Saving the template doesn't send an email or automatically notify users when the policy detects activity.
+
+<!-- Adaptive Protection tasks retained for future validation.
+## Task 3 – Connect the AI policy to Adaptive Protection
 
 Connect your AI policy to insider risk levels. Adaptive Protection uses configured activity and alert conditions to determine these levels.
 
@@ -101,11 +126,11 @@ Connect your AI policy to insider risk levels. Adaptive Protection uses configur
 
 1. From the left navigation, select **Insider risk levels**.
 
-1. On the **Insider risk levels** page:
+1. On the **Insider risk levels** page, in the **Insider risk policy** dropdown, select the **Risky AI usage - financial data protection** policy you created earlier.
 
-   - In the **Insider risk policy** dropdown, select the **Risky AI usage - financial data protection** policy you created earlier.
-   - Leave the default risk level settings unchanged.
-   - Select **Save**.
+1. Review the default conditions for **Elevated**, **Moderate**, and **Minor** risk. Note which conditions assign an **Elevated** risk level. You'll use this level in the endpoint DLP rule.
+
+1. Leave the default risk level settings unchanged, then select **Save**.
 
 Your AI policy is connected to insider risk levels. Next, use an elevated risk level as a DLP condition.
 
@@ -165,7 +190,10 @@ Your existing endpoint policy now uses both banking content and Elevated risk to
 
 > [!NOTE]
 > Risk assignments and endpoint policy updates take time to reach devices. Complete this task by verifying the saved AND conditions, enabled policy, risk-level settings, and Adaptive Protection toggle. No live block or risk-level change is required. The separate Copilot label-based policy remains unchanged.
+-->
 
-## Lab complete
+## Section complete
 
-You've helped Alex connect classification, DLP, and user risk around financial information. The Copilot policy uses Confidential/All Employees to identify content. The existing endpoint policy blocks banking data at configured AI websites only when Adaptive Protection assigns the user an Elevated risk level.
+You've configured a policy to detect potentially risky AI activity and created a notice template for reviewer follow-up. These tools help Alex identify activity for review and prepare consistent guidance for employees.
+
+Continue to [Microsoft Agent 365](./4-agent-365.md) to generate activity with Analyst and explore how it appears in Purview and Agent 365.

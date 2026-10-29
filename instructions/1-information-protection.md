@@ -173,17 +173,11 @@ Your auto-labeling policy is configured in simulation mode. Next, apply a label 
 
 Create a fictional budget summary in Word for the web and apply Confidential/All Employees. This gives you a labeled document for the next section's Copilot DLP policy.
 
-> [!NOTE]
-> New labels can take time to synchronize across Word and DLP. Use the preconfigured Confidential/All Employees label for this document and the following DLP exercise, even if Financial data is available.
-
-> [!NOTE]
-> If Sensitivity is unavailable, check your lab account and SharePoint/OneDrive labeling support. If Confidential/All Employees is missing, contact your instructor rather than selecting another label.
-
 1. In the **Microsoft Purview portal**, select the **Microsoft 365 app launcher** (the nine-dot icon in the upper-left corner).
 
 1. Select **Word**. If Word isn't listed, select **More apps**, then select **Word**.
 
-1. In **Word for the web**, confirm that you're signed in with the lab account provided for **Alex Wilber**, then create a **Blank document**.
+1. In **Word for the web**, confirm that you're signed in with the lab account provided for **Alex Wilber**, then create a blank document.
 
 1. Select the document name at the top of the page and rename it to `Contoso financial planning summary`. The document is saved automatically to your lab account's OneDrive.
 
