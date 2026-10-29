@@ -1,9 +1,3 @@
----
-lab:
-    title: 'Prevent data exposure in Copilot and AI apps with Data Loss Prevention'
-    module: 'Prevent data exposure in Copilot and AI apps with Data Loss Prevention'
----
-
 # Lab – Prevent data exposure in Copilot and AI apps with Data Loss Prevention
 
 Alex now needs controls for how sensitive content is used with AI. You'll enable a label-based Copilot restriction and prepare an endpoint DLP policy for banking information sent to AI websites. Keep the endpoint policy in simulation to evaluate matches without enforcing its blocking actions.
