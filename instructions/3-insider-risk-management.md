@@ -4,6 +4,7 @@ Alex wants to understand potentially risky AI activity alongside the controls co
 
 **Tasks**:
 
+1. Assign insider risk management permissions
 1. Configure analytics and AI risk indicators
 1. Create a Risky AI usage policy
 1. Create a notice template for AI usage guidance
@@ -12,7 +13,27 @@ Alex wants to understand potentially risky AI activity alongside the controls co
 1. Add risk-based enforcement to the existing endpoint policy
 -->
 
-## Task 1 – Configure analytics and AI risk indicators
+## Task 1 – Assign insider risk management permissions
+
+Add Alex Wilber to the Insider Risk Management role group to access the features used in this section.
+
+1. In your existing **Microsoft Purview portal** session, select **Settings** > **Roles and Scopes** > **Role groups**.
+
+1. On the **Role groups for Microsoft Purview solutions** page, select **Insider Risk Management**.
+
+1. On the **Insider Risk Management** flyout panel on the right, select the **Members** tab.
+
+1. On the **Members** tab, select **+ Add member** > **Choose users**.
+
+1. On the **Choose users** tab, select **Alex Wilber**, then select **Select**.
+
+1. Back on the **Members** tab, select **Done**.
+
+1. Select **Confirm** to confirm updating the role group.
+
+Alex is now a member of the Insider Risk Management role group. Next, configure analytics and AI activity indicators.
+
+## Task 2 – Configure analytics and AI risk indicators
 
 Enable analytics and select the Copilot and other AI activity indicators that your risk policy will use.
 
@@ -37,7 +58,7 @@ Enable analytics and select the Copilot and other AI activity indicators that yo
 
 Your AI indicators are enabled. Next, select the users and activities to evaluate in a Risky AI usage policy.
 
-## Task 2 – Create a Risky AI usage policy
+## Task 3 – Create a Risky AI usage policy
 
 Create an organization-wide AI risk policy using Microsoft's built-in thresholds. This adds activity-based detection alongside the content-based DLP policies you configured earlier.
 
@@ -73,7 +94,7 @@ Create an organization-wide AI risk policy using Microsoft's built-in thresholds
 
 1. On the **Choose thresholds for triggering events** page, select **Apply built-in thresholds**, then select **Next**.
 
-1. On the **Indicators** page, expand each category and confirm that the Copilot indicators enabled in Task 1 are selected, then select **Next**.
+1. On the **Indicators** page, expand each category and confirm that the Copilot indicators enabled in Task 2 are selected, then select **Next**.
 
 1. On the **Detection options** page, leave the defaults selected, then select **Next**.
 
@@ -85,7 +106,7 @@ Create an organization-wide AI risk policy using Microsoft's built-in thresholds
 
 Your AI risk policy is configured to evaluate potentially risky Copilot activity. Next, prepare guidance that a reviewer can use during case follow-up. No live alert is required.
 
-## Task 3 – Create a notice template for AI usage guidance
+## Task 4 – Create a notice template for AI usage guidance
 
 Prepare a reusable message about handling financial information with AI. Reviewers can use the template when following up with an employee during case review.
 

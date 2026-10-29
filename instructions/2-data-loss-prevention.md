@@ -229,6 +229,6 @@ You've configured a 30-minute aggregation window to help administrators review r
 
 ## Section complete
 
-You've enabled the Copilot restriction and prepared the banking-data endpoint policy and alerts. Leave the endpoint policy in simulation. Without a risk condition, enabling it would apply the content-based restrictions to all users in scope.
+You've enabled the Copilot restriction and prepared the banking-data endpoint policy and alerts. The endpoint policy remains in simulation so you can evaluate matches without blocking activity.
 
 Continue to [Insider Risk Management](./3-insider-risk-management.md) to configure detection of potentially risky AI activity.
