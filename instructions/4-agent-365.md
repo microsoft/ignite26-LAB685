@@ -13,7 +13,7 @@ You've helped Alex configure classification, DLP, and AI risk detection. Now, us
 Ask Analyst to compare the budget and expenses in your fictional financial document. Keep its Confidential/All Employees label applied.
 
 > [!NOTE]
-> The Copilot DLP policy you enabled earlier can take up to four hours to take effect. You might still be able to analyze the labeled document during this session. If the restriction has taken effect, you might receive a policy message instead.
+> The Copilot DLP policy takes time to synchronize. This exercise focuses on generating and reviewing agent activity, not testing the restriction.
 
 1. In the **Microsoft Purview portal**, select the **Microsoft 365 app launcher** (the nine-dot icon), then open **Microsoft 365 Copilot**. If it isn't listed, select **More apps** to find it.
 
