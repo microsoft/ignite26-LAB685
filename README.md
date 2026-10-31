@@ -35,7 +35,7 @@ Fill in the sections below yourself, then:
 ## 🔥LAB685: Deploy Copilot with confidence: Find & protect exposed sensitive data
 ### Session description
 
-Add your session description here. Keep it concise — 2-3 sentences about what attendees will learn and why it matters.
+Prepare your organization for secure AI adoption. In this hands-on lab, assess oversharing risks, identify exposed sensitive data, apply labels and policy controls, and validate that Microsoft Copilot can scale without exposing critical information.
 
 ### 🚀 Getting started
 
