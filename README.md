@@ -23,7 +23,6 @@ Fill in the sections below yourself, then:
 - You can add a `.devcontainer/` folder if needed.
 
 ---
-
 <a name="start-building"></a>
 
 <p align="center">
@@ -35,41 +34,66 @@ Fill in the sections below yourself, then:
 ## 🔥LAB685: Deploy Copilot with confidence: Find & protect exposed sensitive data
 ### Session description
 
-Prepare your organization for secure AI adoption. In this hands-on lab, assess oversharing risks, identify exposed sensitive data, apply labels and policy controls, and validate that Microsoft Copilot can scale without exposing critical information.
+## Abstract
 
-### 🚀 Getting started
+In this lab, you will classify financial information, configure data loss prevention for Copilot and AI websites, and connect endpoint protection to insider risk. Use only the fictional sample data described in the exercises.
 
-#### In a guided session
+## What you will do
 
-If you're following along during a live session:
+- Configure and publish Microsoft Purview sensitivity labels
+- Apply DLP controls for Copilot and AI web interactions
+- Connect endpoint signals to Insider Risk Management
+- Review activity and risk outcomes for validation
 
-1. Step 1
-2. Step 2
-3. Open [`instructions/`](instructions/README.md) when this session includes
-   attendee step-by-step guidance
+## Learning objectives
 
-#### On your own
+By the end of this lab, you should be able to:
 
-If you're learning at your own pace:
+- Protect sensitive data with labeling and policy enforcement
+- Reduce exfiltration risk across Copilot and web AI entry points
+- Correlate endpoint activity with insider risk indicators
+- Validate protection outcomes with security telemetry
 
-1. Clone this repository
-2. Set up your environment
-3. Follow the session guidance in [`instructions/`](instructions/README.md), or
-   use the linked docs-site entry point when this repository uses that pattern
+## Prerequisites
 
-### 🎯 Learning outcomes
+- Access to the assigned lab environment and tenant accounts
+- Web browser in the provided lab VM
+- No personal or production data usage (lab data only)
 
-By the end of this session, you will be able to:
+## Duration
 
-- Outcome 1
-- Outcome 2
-- Outcome 3
+Estimated time: 60–90 minutes
 
-### 💻 Technologies used
+## Lab instructions
 
-- Technology 1
-- Technology 2
-- Technology 3
+Full step-by-step lab instructions are in:
+
+- [`instructions/LAB685-Instructions.md`](./instructions/LAB685-Instructions.md)
+
+## Technologies used
+
+- [Microsoft Purview](https://learn.microsoft.com/purview/)
+- [Microsoft Purview Information Protection](https://learn.microsoft.com/purview/information-protection)
+- [Microsoft Purview Data Loss Prevention](https://learn.microsoft.com/purview/dlp-learn-about-dlp)
+- [Microsoft Purview Insider Risk Management](https://learn.microsoft.com/purview/insider-risk-management)
+- [Microsoft Defender for Endpoint](https://learn.microsoft.com/defender-endpoint/)
+- [Microsoft Copilot for Microsoft 365](https://learn.microsoft.com/copilot/microsoft-365/)
+
+## Repository structure
+
+- `instructions/` – Official lab walkthrough and exercise steps
+- `docs/` – Supporting documentation and diagrams (if used)
+- `src/` – Optional scripts/assets used by the lab (if used)
+- `infra/` – Optional environment artifacts (if used)
+- `data/` – Fictional sample data only (if used)
+
+## Support
+
+For repository issues, use GitHub Issues in this repository.
+
+## License
+
+This project uses the license included in this repository.
 
 ### 📚 Continue your learning
 
@@ -99,8 +123,10 @@ copilot plugin install microsoftdocs/mcp
 
 For more information, visit the [Learn MCP Server repo](https://aka.ms/learnmcp).
 
-### 👥 Content owners
+## Content owners
 
+- Charles Tostain
+- Richelle Swinton
 <!-- TODO: Add yourself as a content owner
 1. Change the src in the image tag to {your github url}.png
 2. Change INSERT NAME HERE to your name
@@ -108,10 +134,10 @@ For more information, visit the [Learn MCP Server repo](https://aka.ms/learnmcp)
 
 <table>
 <tr>
-    <td align="center"><a href="http://github.com/yourGitHubHandle">
-        <img src="https://github.com/yourGitHubHandle.png" width="100px;" alt="INSERT NAME HERE"/><br />
-        <sub><b>INSERT NAME HERE</b></sub></a><br />
-            <a href="https://github.com/yourGitHubHandle" title="talk">📢</a>
+    <td align="center"><a href="[http://github.com/yourGitHubHandle](https://github.com/charlestostainsecure-droid)">
+        <img src="himg/charlesfy26.png" width="100px;" alt="Charles Tostain"/><br />
+        <sub><b>Charles Tostain</b></sub></a><br />
+            <a href="[https://github.com/yourGitHubHandle](https://github.com/charlestostainsecure-droid)" title="talk">📢</a>
     </td>
 </tr></table>
 
@@ -120,3 +146,4 @@ For more information, visit the [Learn MCP Server repo](https://aka.ms/learnmcp)
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
