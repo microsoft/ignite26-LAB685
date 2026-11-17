@@ -110,7 +110,7 @@ For more information, visit the [Learn MCP Server repo](https://aka.ms/learnmcp)
 <table>
 <tr>
     <td align="center"><a href="[http://github.com/yourGitHubHandle](https://github.com/charlestostainsecure-droid)">
-        <img src="himg/charlesfy26.png" width="100px;" alt="Charles Tostain"/><br />
+        <img src="img/charlesfy26.png" width="100px;" alt="Charles Tostain"/><br />
         <sub><b>Charles Tostain</b></sub></a><br />
             <a href="[https://github.com/yourGitHubHandle](https://github.com/charlestostainsecure-droid)" title="talk">📢</a>
     </td>
