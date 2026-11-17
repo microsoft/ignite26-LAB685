@@ -1,4 +1,13 @@
-# LAB685 – Deploy Copilot with confidence: Find & protect exposed sensitive data
+<a name="start-building"></a>
+
+<p align="center">
+<img src="img/banner-ignite-26.png" alt="Microsoft Ignite 2026" width="100%"/>
+</p>
+
+# [Microsoft Ignite 2026](https://ignite.microsoft.com)
+
+## 🔥LAB685: Deploy Copilot with confidence: Find & protect exposed sensitive data
+### Session description
 
 ## Abstract
 
